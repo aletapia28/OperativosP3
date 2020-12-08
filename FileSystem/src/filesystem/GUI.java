@@ -5,6 +5,10 @@
  */
 package filesystem;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeSelectionModel;
+
 /**
  *
  * @author aleta
@@ -16,6 +20,8 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI() {
         initComponents();
+        DefaultMutableTreeNode raiz= new DefaultMutableTreeNode("raiz");
+        
     }
 
     /**
@@ -27,21 +33,203 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTree2 = new javax.swing.JTree();
+        jPanel1 = new javax.swing.JPanel();
+        addFile = new javax.swing.JButton();
+        mkdir = new javax.swing.JButton();
+        modFile = new javax.swing.JButton();
+        moveDir = new javax.swing.JButton();
+        copyFile = new javax.swing.JButton();
+        seeProperties = new javax.swing.JButton();
+        delete = new javax.swing.JButton();
+        search = new javax.swing.JTextField();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jScrollPane2.setViewportView(jTree2);
+
+        addFile.setText("Agregar Archivo");
+        addFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addFileActionPerformed(evt);
+            }
+        });
+
+        mkdir.setText("Agregar Directorio");
+        mkdir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mkdirActionPerformed(evt);
+            }
+        });
+
+        modFile.setText("Modificar Archivo");
+        modFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modFileActionPerformed(evt);
+            }
+        });
+
+        moveDir.setText("Mover Archivo");
+        moveDir.setToolTipText("");
+        moveDir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moveDirActionPerformed(evt);
+            }
+        });
+
+        copyFile.setText("Copiar Archivo");
+        copyFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyFileActionPerformed(evt);
+            }
+        });
+
+        seeProperties.setText("Ver Propiedades");
+        seeProperties.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                seePropertiesActionPerformed(evt);
+            }
+        });
+
+        delete.setText("Eliminar ");
+        delete.setActionCommand("Eliminar");
+        delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteActionPerformed(evt);
+            }
+        });
+
+        search.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        search.setText("Buscar");
+        search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mkdir)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(addFile)
+                .addGap(18, 18, 18)
+                .addComponent(moveDir)
+                .addGap(18, 18, 18)
+                .addComponent(modFile)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(seeProperties)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(copyFile)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addComponent(delete)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addFile)
+                    .addComponent(mkdir)
+                    .addComponent(modFile)
+                    .addComponent(moveDir)
+                    .addComponent(copyFile)
+                    .addComponent(seeProperties)
+                    .addComponent(delete))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void addFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFileActionPerformed
+        // TODO add your handling code here:
+        
+       
+        
+        addFilePopup popup = new addFilePopup();
+        popup.setVisible(true);
+//        dispose();
+
+        String fileName= popup.FileName.getText();
+        String fileExt= popup.FileExt.getText();
+        String fileContent= popup.fileContent.getText();
+        
+        System.out.println(fileName);
+        System.out.println(fileExt);
+        System.out.println(fileContent);
+        
+
+        
+        
+        TreeSelectionModel smd= jTree2.getSelectionModel();
+        if(smd.getSelectionCount()>0);{
+
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTree2.getSelectionPath().getLastPathComponent();
+            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode ("holasadasda");
+
+            selectedNode.add(newNode);
+
+            DefaultTreeModel model = (DefaultTreeModel) jTree2.getModel();
+            model.reload();
+        }
+    }//GEN-LAST:event_addFileActionPerformed
+
+    private void mkdirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mkdirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mkdirActionPerformed
+
+    private void modFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modFileActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_modFileActionPerformed
+
+    private void moveDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveDirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_moveDirActionPerformed
+
+    private void copyFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyFileActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_copyFileActionPerformed
+
+    private void seePropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seePropertiesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_seePropertiesActionPerformed
+
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteActionPerformed
+
+    private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +267,16 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addFile;
+    private javax.swing.JButton copyFile;
+    private javax.swing.JButton delete;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTree jTree2;
+    private javax.swing.JButton mkdir;
+    private javax.swing.JButton modFile;
+    private javax.swing.JButton moveDir;
+    private javax.swing.JTextField search;
+    private javax.swing.JButton seeProperties;
     // End of variables declaration//GEN-END:variables
 }
