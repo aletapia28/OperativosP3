@@ -18,4 +18,17 @@ public class FileSystem {
         // TODO code application logic here
     }
     
+
+
+        
+    //MKDIR
+    //CAMBIAR DIR
+    //LISTAR DIR
+    //COPIAR
+    //MOVER
+    //REMOVE
+    //FIND
+    //TREE
+
+    
 }
