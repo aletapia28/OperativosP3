@@ -5,6 +5,9 @@
  */
 package filesystem;
 
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
 /**
  *
  * @author aleta
@@ -14,6 +17,11 @@ public class addFilePopup extends javax.swing.JFrame {
     /**
      * Creates new form addFilePopup
      */
+    
+    public String name;
+    public String ext;
+    public String content;
+    
     public addFilePopup() {
         initComponents();
     }
@@ -96,13 +104,59 @@ public class addFilePopup extends javax.swing.JFrame {
 
     private void addFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFileButtonActionPerformed
 //        // TODO add your handling code here:
-//        System.out.println(FileName.getText());
 //        System.out.println(FileExt.getText());
-//        System.out.println(fileContent.getText());
+//        ext= FileExt.getText();
+        GUI gui = new GUI();
+        gui.setFile("dsfkljhbf");
+//        setExt(FileExt.getText());
+         
+    
         dispose();
         
  
     }//GEN-LAST:event_addFileButtonActionPerformed
+
+    public void setExt(String ext) {
+        this.ext = ext;
+    }
+
+    public String getExt() {
+        return ext;
+    }
+
+    public String getFileExt() {
+        return FileExt.getText();
+    }
+
+    public void setFileContent(JTextField fileContent) {
+        this.fileContent = fileContent;
+    }
+
+    public void setFileExt(JTextField FileExt) {
+        this.FileExt = FileExt;
+    }
+
+    public JTextField getFileName() {
+        return FileName;
+    }
+
+    public void setFileName(JTextField FileName) {
+        this.FileName = FileName;
+    }
+
+    public JButton getAddFileButton() {
+        return addFileButton;
+    }
+
+    public void setAddFileButton(JButton addFileButton) {
+        this.addFileButton = addFileButton;
+    }
+
+    public JTextField getFileContent() {
+        return fileContent;
+    }
+
+    
 
     /**
      * @param args the command line arguments

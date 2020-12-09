@@ -5,6 +5,7 @@
  */
 package filesystem;
 
+import javax.swing.JTextField;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
@@ -18,6 +19,15 @@ public class GUI extends javax.swing.JFrame {
     /**
      * Creates new form GUI
      */
+    public String File;
+
+    public String getFile() {
+        return File;
+    }
+
+    public void setFile(String File) {
+        this.File = File;
+    }
     public GUI() {
         initComponents();
         DefaultMutableTreeNode raiz= new DefaultMutableTreeNode("raiz");
@@ -172,29 +182,25 @@ public class GUI extends javax.swing.JFrame {
 
     private void addFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFileActionPerformed
         // TODO add your handling code here:
-        
-       
+            
         
         addFilePopup popup = new addFilePopup();
         popup.setVisible(true);
+        setFile("gola");
+        System.out.println(File);
+        
+        
 //        dispose();
 
-        String fileName= popup.FileName.getText();
-        String fileExt= popup.FileExt.getText();
-        String fileContent= popup.fileContent.getText();
         
-        System.out.println(fileName);
-        System.out.println(fileExt);
-        System.out.println(fileContent);
-        
-
-        
-        
+//        
         TreeSelectionModel smd= jTree2.getSelectionModel();
+        
         if(smd.getSelectionCount()>0);{
 
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTree2.getSelectionPath().getLastPathComponent();
-            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode ("holasadasda");
+
+            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode (File);
 
             selectedNode.add(newNode);
 
