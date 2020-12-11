@@ -10,8 +10,11 @@ package filesystem;
  * @author aleta
  */
 public class Sector {
-    private int id;
-    private boolean isEmpty;
+    public int id;
+    public boolean isEmpty;
+
+    public Sector() {
+    }
 
 
     public Sector(int id, boolean isEmpty) {

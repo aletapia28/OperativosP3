@@ -135,6 +135,11 @@ public class File {
         return "File{" + "name=" + name + ", extension=" + extension + ", content=" + content + ", creationDate=" + creationDate + ", modicationDate=" + modicationDate + ", size=" + size + ", path=" + path + '}';
     }
 
+    
+    public double sectoresNecesarios(int sizeFile, int sectorSize){
+       return (int) Math.ceil(sizeFile/sectorSize);
+       
+    }
 
     // }
     //CREATEFILE

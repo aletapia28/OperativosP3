@@ -13,26 +13,38 @@ import java.util.ArrayList;
  */
 public class Disk {
 
+    public Disk() {
+    }
+
+
+
     @Override
     public String toString() {
         return "Disk{" + "Name=" + Name + ", size=" + size + ", sectors=" + sectors.toString() + '}';
     }
     
     private String Name;
-    private int size;
-    private ArrayList<Sector> sectors;
+    public int size;
+    public ArrayList<Sector> sectors;
+    public int CantidadSectores;
 
  
         
 
     
-    public Disk(String Name, int size, ArrayList<Sector> sectors) {
+    public Disk(String Name, int size, int CantidadSectores,ArrayList<Sector> sectors) {
         this.Name = Name;
         this.size = size;
         this.sectors = sectors;
+        this.CantidadSectores = CantidadSectores;
         
         
         System.out.println("disco creado");
+    }
+    
+    
+    public int sectorSize(){
+        return this.size/ CantidadSectores;
     }
 
 
