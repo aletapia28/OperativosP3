@@ -5,21 +5,42 @@
  */
 package filesystem;
 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
+import javax.swing.tree.DefaultMutableTreeNode; 
+import filesystem.Disk;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author aleta
+ * 
+ * 
  */
+
 public class GUI extends javax.swing.JFrame {
 
     /**
      * Creates new form GUI
      */
     public String File;
+    JFrame f;  
+    JTree jt; 
+    Disk disk;
+    
+   
+
+
 
     public String getFile() {
         return File;
@@ -30,8 +51,11 @@ public class GUI extends javax.swing.JFrame {
     }
     public GUI() {
         initComponents();
-        DefaultMutableTreeNode raiz= new DefaultMutableTreeNode("raiz");
+//        JTree jt= new JTree();
+        Disk disk = new Disk();
         
+        
+
     }
 
     /**
@@ -43,8 +67,6 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTree2 = new javax.swing.JTree();
         jPanel1 = new javax.swing.JPanel();
         addFile = new javax.swing.JButton();
         mkdir = new javax.swing.JButton();
@@ -54,10 +76,11 @@ public class GUI extends javax.swing.JFrame {
         seeProperties = new javax.swing.JButton();
         delete = new javax.swing.JButton();
         search = new javax.swing.JTextField();
+        createDisk = new javax.swing.JButton();
+        label = new javax.swing.JTextField();
+        treePanel = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jScrollPane2.setViewportView(jTree2);
 
         addFile.setText("Agregar Archivo");
         addFile.addActionListener(new java.awt.event.ActionListener() {
@@ -118,30 +141,43 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
+        createDisk.setText("Crear Disco");
+        createDisk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createDiskActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mkdir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(addFile)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(mkdir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(addFile)
+                        .addGap(18, 18, 18)
+                        .addComponent(moveDir))
+                    .addComponent(createDisk))
                 .addGap(18, 18, 18)
-                .addComponent(moveDir)
-                .addGap(18, 18, 18)
-                .addComponent(modFile)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(seeProperties)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(copyFile)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                .addComponent(delete)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(modFile)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(seeProperties)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(copyFile)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                        .addComponent(delete)
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(label, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -156,25 +192,34 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(seeProperties)
                     .addComponent(delete))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(createDisk)
+                    .addComponent(label, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
+
+        treePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                treePanelMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(treePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(treePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE))
         );
 
         pack();
@@ -183,38 +228,72 @@ public class GUI extends javax.swing.JFrame {
     private void addFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFileActionPerformed
         // TODO add your handling code here:
             
+    String name = JOptionPane.showInputDialog("Digite el nombre del archivo");
+    String extension = JOptionPane.showInputDialog("Digite la extension");
+    String contenido = JOptionPane.showInputDialog("Digite el contenido"); 
+    String tam = JOptionPane.showInputDialog("Digite el tamaño");
+    
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
+    Date date = new Date();
+    
+    File file = new File( name,extension, contenido, date, null);
+    
+    //obtener cantidad de sectores necesarios
+    int necesarios = disk.sectorSize();
+    
+//    int 
+    
+    
+    //obtener los primeros sectores libres
+    
+    
+    Sector s = new Sector();
+    
+    
+        //agregarlo al disco
+    
+    
+    
+    
+    
+//        System.out.println(file.toString());
+     
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
+        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
+        selectedNode.add(newNode);
+//        System.out.println(jt.getSelectionPath());
         
-        addFilePopup popup = new addFilePopup();
-        popup.setVisible(true);
-        setFile("gola");
-        System.out.println(File);
+       
         
+        // reload jtree model
+        DefaultTreeModel model = (DefaultTreeModel)jt.getModel();
         
-//        dispose();
-
-        
-//        
-        TreeSelectionModel smd= jTree2.getSelectionModel();
-        
-        if(smd.getSelectionCount()>0);{
-
-            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jTree2.getSelectionPath().getLastPathComponent();
-
-            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode (File);
-
-            selectedNode.add(newNode);
-
-            DefaultTreeModel model = (DefaultTreeModel) jTree2.getModel();
-            model.reload();
-        }
+        model.reload();
+//        model.nodeChanged(selectedNode);
+     
     }//GEN-LAST:event_addFileActionPerformed
 
     private void mkdirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mkdirActionPerformed
         // TODO add your handling code here:
+        
+        
+        
+        
+        
+        
     }//GEN-LAST:event_mkdirActionPerformed
 
     private void modFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modFileActionPerformed
         // TODO add your handling code here:
+        
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
+        
+        selectedNode.setUserObject(label.getText());
+        // reload jtree model
+        DefaultTreeModel model = (DefaultTreeModel)jt.getModel();
+//        model.reload();
+        model.nodeChanged(selectedNode);
+        
     }//GEN-LAST:event_modFileActionPerformed
 
     private void moveDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveDirActionPerformed
@@ -231,11 +310,66 @@ public class GUI extends javax.swing.JFrame {
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         // TODO add your handling code here:
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
+        
+        if(selectedNode != jt.getModel().getRoot())
+        {
+            DefaultTreeModel model = (DefaultTreeModel)jt.getModel();
+
+            model.removeNodeFromParent(selectedNode);
+
+            model.nodeChanged(selectedNode);
+        }
     }//GEN-LAST:event_deleteActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchActionPerformed
+
+    private void createDiskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createDiskActionPerformed
+        // TODO add your handling code here:
+    
+    String name = JOptionPane.showInputDialog("Digite el nombre del disco");
+    String size = JOptionPane.showInputDialog("Digite el tamaño del disco");
+    String cant_sector = JOptionPane.showInputDialog("Digite la cantidad de sectores");
+    ArrayList sectors = new ArrayList<Sector>();
+    
+    for(int i=0;i<Integer.parseInt(cant_sector);i++){
+            Sector sector_n = new Sector(i,true);
+            sectors.add(sector_n);
+    }
+    
+    
+    disk = new Disk(name,Integer.parseInt(size), Integer.parseInt(cant_sector) ,sectors);
+//    System.out.println(disk.toString());
+        
+    DefaultMutableTreeNode style=new DefaultMutableTreeNode(name);  
+    jt = new javax.swing.JTree(style);
+    treePanel.setViewportView(jt);       
+    
+    }//GEN-LAST:event_createDiskActionPerformed
+
+    private void jt(java.awt.event.MouseEvent evt){
+        
+        TreeSelectionModel smd = jt.getSelectionModel();
+        if(smd.getSelectionCount() > 0){
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
+            label.setText(selectedNode.getUserObject().toString());
+        }
+    }
+    
+    
+    private void treePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treePanelMouseClicked
+        // TODO add your handling code here:
+        TreeSelectionModel smd = jt.getSelectionModel();
+        if(smd.getSelectionCount() > 0){
+            
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
+            label.setText(selectedNode.getUserObject().toString());
+           
+        }
+        
+    }//GEN-LAST:event_treePanelMouseClicked
 
     /**
      * @param args the command line arguments
@@ -272,17 +406,25 @@ public class GUI extends javax.swing.JFrame {
         });
     }
 
+    private void addFile(File file){
+        
+    
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addFile;
     private javax.swing.JButton copyFile;
+    private javax.swing.JButton createDisk;
     private javax.swing.JButton delete;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTree jTree2;
+    private javax.swing.JTextField label;
     private javax.swing.JButton mkdir;
     private javax.swing.JButton modFile;
     private javax.swing.JButton moveDir;
     private javax.swing.JTextField search;
     private javax.swing.JButton seeProperties;
+    public javax.swing.JScrollPane treePanel;
     // End of variables declaration//GEN-END:variables
+
+
 }

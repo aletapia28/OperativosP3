@@ -43,7 +43,26 @@ public class File {
 
     }
 
+    public File(String name, String extension, String content, Date creationDate, Date modicationDate) {
+        this.name = name;
+        this.extension = extension;
+        this.content = content;
+        this.creationDate = creationDate;
+        this.modicationDate = modicationDate;
+    }
 
+    public File(String name, String extension, String content, Date creationDate, Date modicationDate, int size, String path) {
+        this.name = name;
+        this.extension = extension;
+        this.content = content;
+        this.creationDate = creationDate;
+        this.modicationDate = modicationDate;
+        this.size = size;
+        this.path = path;
+    }
+
+
+     
     public String getName() {
         return this.name;
     }
@@ -52,6 +71,7 @@ public class File {
         this.name = name;
     }
 
+   
     public String getExtension() {
         return this.extension;
     }
@@ -109,6 +129,12 @@ public class File {
         this.path=p_path;
 
     }
+    
+        @Override
+    public String toString() {
+        return "File{" + "name=" + name + ", extension=" + extension + ", content=" + content + ", creationDate=" + creationDate + ", modicationDate=" + modicationDate + ", size=" + size + ", path=" + path + '}';
+    }
+
 
     // }
     //CREATEFILE
