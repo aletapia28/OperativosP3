@@ -61,6 +61,14 @@ public class File {
         this.path = path;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
 
      
     public String getName() {

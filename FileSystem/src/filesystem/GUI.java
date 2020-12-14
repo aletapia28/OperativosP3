@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.tree.TreePath;
 
 /**
  *
@@ -239,9 +240,7 @@ public class GUI extends javax.swing.JFrame {
 
         File file = new File( name,extension, contenido, date, null);
 
-
         int sectoresNecesarios = (int) file.sectoresNecesarios(Integer.parseInt(tam), disk.sectorSize());
-
 
         //obtener directorio actual
         //agregarlo a la lista 
@@ -275,23 +274,20 @@ public class GUI extends javax.swing.JFrame {
     private void mkdirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mkdirActionPerformed
         // TODO add your handling code here:
         
-        
-        
-        
-        
-        
     }//GEN-LAST:event_mkdirActionPerformed
 
     private void modFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modFileActionPerformed
         // TODO add your handling code here:
+
+        String contenido = JOptionPane.showInputDialog("Digite el contenido"); 
+        
+        modifyCurrentFileNode(contenido);
         
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
-        
-        selectedNode.setUserObject(label.getText());
-        // reload jtree model
         DefaultTreeModel model = (DefaultTreeModel)jt.getModel();
-//        model.reload();
-        model.nodeChanged(selectedNode);
+
+        model.reload();
+
         
     }//GEN-LAST:event_modFileActionPerformed
 
@@ -426,6 +422,18 @@ public class GUI extends javax.swing.JFrame {
         return band;
     }
     
+    public void modifyCurrentFileNode(String new_file_content) {
+        TreePath currentSelection = jt.getSelectionPath();
+        if (currentSelection != null) {
+            DefaultMutableTreeNode currentNode =
+                    (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
+            File archivo = (File) currentNode.getUserObject();
+            archivo.setContent(new_file_content);
+            
+        }
+        
+
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addFile;
     private javax.swing.JButton copyFile;
