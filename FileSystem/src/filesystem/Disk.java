@@ -27,6 +27,7 @@ public class Disk {
     public int size;
     public ArrayList<Sector> sectors;
     public int CantidadSectores;
+    
 
  
         

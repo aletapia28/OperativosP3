@@ -52,6 +52,7 @@ public class GUI extends javax.swing.JFrame {
     public GUI() {
         initComponents();
 //        JTree jt= new JTree();
+        
         Disk disk = new Disk();
         
         
@@ -228,38 +229,49 @@ public class GUI extends javax.swing.JFrame {
     private void addFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFileActionPerformed
         // TODO add your handling code here:
             
-    String name = JOptionPane.showInputDialog("Digite el nombre del archivo");
-    String extension = JOptionPane.showInputDialog("Digite la extension");
-    String contenido = JOptionPane.showInputDialog("Digite el contenido"); 
-    String tam = JOptionPane.showInputDialog("Digite el tamaño");
+        String name = JOptionPane.showInputDialog("Digite el nombre del archivo");
+        String extension = JOptionPane.showInputDialog("Digite la extension");
+        String contenido = JOptionPane.showInputDialog("Digite el contenido"); 
+        String tam = JOptionPane.showInputDialog("Digite el tamaño");
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
+        Date date = new Date();
+
+        File file = new File( name,extension, contenido, date, null);
+
+
+        int sectoresNecesarios = (int) file.sectoresNecesarios(Integer.parseInt(tam), disk.sectorSize());
+
+
+
+        //obtener directorio actual
+        //agregarlo a la lista 
+        //agregarlo a los sectores libres
+        //saber cuantos sectores quedan libres
+        //obtener los primeros sectores libres
+
     
-    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
-    Date date = new Date();
-    
-    File file = new File( name,extension, contenido, date, null);
-    
-    //obtener cantidad de sectores necesarios
-    int necesarios = disk.sectorSize();
-    
-//    int 
-    
-    
-    //obtener los primeros sectores libres
-    
-    
-    Sector s = new Sector();
-    
-    
+        //Sector s = new Sector();
+
+
         //agregarlo al disco
     
-    
-    
-    
-    
-//        System.out.println(file.toString());
-     
+        
+        
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
+        
+        int childsNum= jt.getModel().getChildCount(selectedNode);
+//        Object child = jt.getModel().getChild(selectedNode, 1);
+        System.out.println(jt.getModel().getChild(selectedNode,1));
+        //buscar repetidos para ver si se puede insertar
+//        System.out.println(child);
+
+        
+
+        System.out.println(childsNum);        
+        System.out.println(selectedNode);
+        
         selectedNode.add(newNode);
 //        System.out.println(jt.getSelectionPath());
         
@@ -267,7 +279,7 @@ public class GUI extends javax.swing.JFrame {
         
         // reload jtree model
         DefaultTreeModel model = (DefaultTreeModel)jt.getModel();
-        
+
         model.reload();
 //        model.nodeChanged(selectedNode);
      
@@ -328,25 +340,28 @@ public class GUI extends javax.swing.JFrame {
 
     private void createDiskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createDiskActionPerformed
         // TODO add your handling code here:
+
+        String name = JOptionPane.showInputDialog("Digite el nombre del disco");
+        String size = JOptionPane.showInputDialog("Digite el tamaño del disco");
+        String cant_sector = JOptionPane.showInputDialog("Digite la cantidad de sectores");
+        ArrayList sectors = new ArrayList<Sector>();
+
+        for(int i=0;i<Integer.parseInt(cant_sector);i++){
+                Sector sector_n = new Sector(i,true);
+                sectors.add(sector_n);
+        }
     
-    String name = JOptionPane.showInputDialog("Digite el nombre del disco");
-    String size = JOptionPane.showInputDialog("Digite el tamaño del disco");
-    String cant_sector = JOptionPane.showInputDialog("Digite la cantidad de sectores");
-    ArrayList sectors = new ArrayList<Sector>();
     
-    for(int i=0;i<Integer.parseInt(cant_sector);i++){
-            Sector sector_n = new Sector(i,true);
-            sectors.add(sector_n);
-    }
-    
-    
-    disk = new Disk(name,Integer.parseInt(size), Integer.parseInt(cant_sector) ,sectors);
-//    System.out.println(disk.toString());
+        disk = new Disk(name,Integer.parseInt(size), Integer.parseInt(cant_sector) ,sectors);
+    //    System.out.println(disk.toString());
+
+        DefaultMutableTreeNode style=new DefaultMutableTreeNode(name);  
+        jt = new javax.swing.JTree(style);
+        treePanel.setViewportView(jt);       
         
-    DefaultMutableTreeNode style=new DefaultMutableTreeNode(name);  
-    jt = new javax.swing.JTree(style);
-    treePanel.setViewportView(jt);       
-    
+        
+        
+
     }//GEN-LAST:event_createDiskActionPerformed
 
     private void jt(java.awt.event.MouseEvent evt){

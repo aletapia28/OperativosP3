@@ -15,7 +15,6 @@ public class Dir {
     
 
     private String Name;
-
     private ArrayList<File> files;
     private ArrayList<Dir> dirs;
 
