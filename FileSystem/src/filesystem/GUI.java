@@ -243,45 +243,32 @@ public class GUI extends javax.swing.JFrame {
         int sectoresNecesarios = (int) file.sectoresNecesarios(Integer.parseInt(tam), disk.sectorSize());
 
 
-
         //obtener directorio actual
         //agregarlo a la lista 
         //agregarlo a los sectores libres
         //saber cuantos sectores quedan libres
         //obtener los primeros sectores libres
 
-    
         //Sector s = new Sector();
-
-
         //agregarlo al disco
-    
-        
+
         
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
-        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
+        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(file);
         
-        int childsNum= jt.getModel().getChildCount(selectedNode);
+        //int childsNum= jt.getModel().getChildCount(selectedNode);
 //        Object child = jt.getModel().getChild(selectedNode, 1);
-        System.out.println(jt.getModel().getChild(selectedNode,1));
-        //buscar repetidos para ver si se puede insertar
-//        System.out.println(child);
 
-        
+        Boolean nombre_repetido = name_check(selectedNode,name,extension);
+        if(!nombre_repetido){
+            selectedNode.add(newNode); 
+            DefaultTreeModel model = (DefaultTreeModel)jt.getModel();
 
-        System.out.println(childsNum);        
-        System.out.println(selectedNode);
-        
-        selectedNode.add(newNode);
-//        System.out.println(jt.getSelectionPath());
-        
-       
-        
-        // reload jtree model
-        DefaultTreeModel model = (DefaultTreeModel)jt.getModel();
+            model.reload();
+        }else{
+            JOptionPane.showMessageDialog(rootPane,"El nombre del archivo ya existe");
+        }
 
-        model.reload();
-//        model.nodeChanged(selectedNode);
      
     }//GEN-LAST:event_addFileActionPerformed
 
@@ -358,9 +345,6 @@ public class GUI extends javax.swing.JFrame {
         DefaultMutableTreeNode style=new DefaultMutableTreeNode(name);  
         jt = new javax.swing.JTree(style);
         treePanel.setViewportView(jt);       
-        
-        
-        
 
     }//GEN-LAST:event_createDiskActionPerformed
 
@@ -424,6 +408,22 @@ public class GUI extends javax.swing.JFrame {
     private void addFile(File file){
         
     
+    }
+
+    public boolean name_check(DefaultMutableTreeNode parentNode,String name,String ext){
+        boolean band = false;
+        int lim = parentNode.getChildCount();
+        if(lim != 0){
+            for(int i=0;i<lim;i++){
+            DefaultMutableTreeNode temp = (DefaultMutableTreeNode) parentNode.getChildAt(i);
+            Object user = temp.getUserObject(); 
+            File file_aux = (File) user;
+                if(file_aux.getName().equals(name)&&file_aux.getExtension().equals(ext)){
+                    band = true;
+                }
+            }
+        }
+        return band;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
