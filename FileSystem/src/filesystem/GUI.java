@@ -288,9 +288,7 @@ public class GUI extends javax.swing.JFrame {
         TreePath currentSelection = jt.getSelectionPath();
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
         File archivo = (File) currentNode.getUserObject();
-        System.out.println("ff");
-        System.out.println(archivo.getContent());
-        textPane.setText(archivo.getContent());
+        textPane.setText(archivo.content+ "\n" + archivo.name);
         textPane.setVisible(true);
     }//GEN-LAST:event_seePropertiesActionPerformed
 
