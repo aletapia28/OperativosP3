@@ -356,7 +356,8 @@ public class GUI extends javax.swing.JFrame {
 
         DefaultMutableTreeNode style=new DefaultMutableTreeNode(name);  
         jt = new javax.swing.JTree(style);
-        treePanel.setViewportView(jt);       
+        treePanel.setViewportView(jt);    
+        
 
     }//GEN-LAST:event_createDiskActionPerformed
 
@@ -365,7 +366,7 @@ public class GUI extends javax.swing.JFrame {
         TreeSelectionModel smd = jt.getSelectionModel();
         if(smd.getSelectionCount() > 0){
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
-            label.setText(selectedNode.getUserObject().toString());
+            
         }
     }
     
@@ -376,8 +377,7 @@ public class GUI extends javax.swing.JFrame {
         if(smd.getSelectionCount() > 0){
             
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
-            label.setText(selectedNode.getUserObject().toString());
-           
+            System.out.println(selectedNode);
         }
         
     }//GEN-LAST:event_treePanelMouseClicked
@@ -441,8 +441,7 @@ public class GUI extends javax.swing.JFrame {
     public void modifyCurrentFileNode(String new_file_content) {
         TreePath currentSelection = jt.getSelectionPath();
         if (currentSelection != null) {
-            DefaultMutableTreeNode currentNode =
-                    (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
+            DefaultMutableTreeNode currentNode =(DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
             File archivo = (File) currentNode.getUserObject();
             archivo.setContent(new_file_content);
             
