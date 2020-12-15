@@ -44,6 +44,12 @@ public class GUI extends javax.swing.JFrame {
     public GUI() {
         initComponents();   
         Disk disk = new Disk();
+        
+        fileName.setVisible(false);
+        fileContent.setVisible(false);
+        fileDate.setVisible(false);
+        fileDateMod.setVisible(false);
+        fileSize.setVisible(false);
     }
 
     /**
@@ -66,7 +72,12 @@ public class GUI extends javax.swing.JFrame {
         search = new javax.swing.JTextField();
         createDisk = new javax.swing.JButton();
         treePanel = new javax.swing.JScrollPane();
-        textPane = new javax.swing.JLabel();
+        textPane = new javax.swing.JPanel();
+        fileName = new javax.swing.JLabel();
+        fileContent = new javax.swing.JLabel();
+        fileDate = new javax.swing.JLabel();
+        fileDateMod = new javax.swing.JLabel();
+        fileSize = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -152,11 +163,9 @@ public class GUI extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(modFile)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(seeProperties)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(createDisk)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(seeProperties))
+                    .addComponent(createDisk))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -190,6 +199,47 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
+        fileName.setText("name");
+
+        fileContent.setText("contnte");
+
+        fileDate.setText("date");
+
+        fileDateMod.setText("mod");
+
+        fileSize.setText("size");
+
+        javax.swing.GroupLayout textPaneLayout = new javax.swing.GroupLayout(textPane);
+        textPane.setLayout(textPaneLayout);
+        textPaneLayout.setHorizontalGroup(
+            textPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(textPaneLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(textPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(fileContent)
+                    .addComponent(fileName)
+                    .addComponent(fileDate)
+                    .addGroup(textPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(fileSize)
+                        .addComponent(fileDateMod)))
+                .addContainerGap(373, Short.MAX_VALUE))
+        );
+        textPaneLayout.setVerticalGroup(
+            textPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(textPaneLayout.createSequentialGroup()
+                .addGap(94, 94, 94)
+                .addComponent(fileName)
+                .addGap(68, 68, 68)
+                .addComponent(fileContent)
+                .addGap(43, 43, 43)
+                .addComponent(fileDate)
+                .addGap(47, 47, 47)
+                .addComponent(fileDateMod)
+                .addGap(44, 44, 44)
+                .addComponent(fileSize)
+                .addContainerGap(54, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -198,8 +248,7 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(treePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textPane, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(textPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -288,7 +337,26 @@ public class GUI extends javax.swing.JFrame {
         TreePath currentSelection = jt.getSelectionPath();
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
         File archivo = (File) currentNode.getUserObject();
-        textPane.setText(archivo.content+ "\n" + archivo.name);
+        
+        fileName.setVisible(true);
+        
+        fileContent.setVisible(true);
+        fileDate.setVisible(true);
+        fileDateMod.setVisible(true);
+        fileSize.setVisible(true);
+
+        
+        
+        fileName.setText("Nombre: " + archivo.getName()+"."+ archivo.getExtension());
+//        fileExt.setText(archivo.getExtension());
+        fileContent.setText("Contenido: " + archivo.getContent());
+        fileDate.setText("Fecha Creacion: " + archivo.getCreationDate().toString());
+        fileDateMod.setText("Fecha Modificacion: " +archivo.getModicationDate().toString());
+        fileSize.setText("Tamaño: " +String.valueOf(archivo.getSize()));
+        
+        
+        
+    
         textPane.setVisible(true);
     }//GEN-LAST:event_seePropertiesActionPerformed
 
@@ -316,9 +384,16 @@ public class GUI extends javax.swing.JFrame {
             //        TreePath currentSelection = jt.getSelectionPath();
             DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (tp.getLastPathComponent());
             File archivo = (File) currentNode.getUserObject();
-            textPane.setText(archivo.getContent());
+            
+            fileContent.setText(archivo.getContent());           
+            
+            fileName.setVisible(false);
+            fileContent.setVisible(true);
+            fileDate.setVisible(false);
+            fileDateMod.setVisible(false);
+            fileSize.setVisible(false);
         }else{
-            textPane.setText("");
+            fileContent.setText("");
         } 
         textPane.setVisible(true);
     }
@@ -449,13 +524,18 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton copyFile;
     private javax.swing.JButton createDisk;
     private javax.swing.JButton delete;
+    private javax.swing.JLabel fileContent;
+    private javax.swing.JLabel fileDate;
+    private javax.swing.JLabel fileDateMod;
+    private javax.swing.JLabel fileName;
+    private javax.swing.JLabel fileSize;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton mkdir;
     private javax.swing.JButton modFile;
     private javax.swing.JButton moveDir;
     private javax.swing.JTextField search;
     private javax.swing.JButton seeProperties;
-    private javax.swing.JLabel textPane;
+    private javax.swing.JPanel textPane;
     public javax.swing.JScrollPane treePanel;
     // End of variables declaration//GEN-END:variables
 

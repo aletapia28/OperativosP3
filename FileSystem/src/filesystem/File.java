@@ -151,6 +151,9 @@ public class File {
     public String toString() {
         return "File{" + "name=" + name + ", extension=" + extension + ", content=" + content + ", creationDate=" + creationDate + ", modicationDate=" + modicationDate + ", size=" + size + ", path=" + path + '}';
     }
+//     public String watch() {
+//        return "name: " + name + "\nextension=" + extension + ", content=" + content + ", creationDate=" + creationDate + ", modicationDate=" + modicationDate + ", size=" + size + ", path=" + path + '}';
+//    }
 
     
     public double sectoresNecesarios(int sizeFile, int sectorSize){
