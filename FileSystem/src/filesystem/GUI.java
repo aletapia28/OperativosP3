@@ -276,10 +276,11 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         String name = JOptionPane.showInputDialog("Digite el nombre del directorio");
 
-        Dir dir = new Dir(name);
-
+        File file = new File( name,null, null, null, null);
+        
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
-        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(dir.getName());
+        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
+        
 
         Boolean nombre_repetido = name_check(selectedNode,name,"");
         if(!nombre_repetido){
@@ -290,6 +291,7 @@ public class GUI extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(rootPane,"El nombre del directorio ya existe");
         }
+
     }//GEN-LAST:event_mkdirActionPerformed
 
     private void modFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modFileActionPerformed
@@ -317,6 +319,13 @@ public class GUI extends javax.swing.JFrame {
 
     private void seePropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seePropertiesActionPerformed
         // TODO add your handling code here:
+        TreePath currentSelection = jt.getSelectionPath();
+        DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
+        File archivo = (File) currentNode.getUserObject();
+        System.out.println("ff");
+        System.out.println(archivo.getContent());
+        textPane.setText(archivo.getContent());
+        textPane.setVisible(true);
     }//GEN-LAST:event_seePropertiesActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
@@ -365,7 +374,7 @@ public class GUI extends javax.swing.JFrame {
         TreeSelectionModel smd = jt.getSelectionModel();
         if(smd.getSelectionCount() > 0){
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
-            label.setText(selectedNode.getUserObject().toString());
+            //label.setText(selectedNode.getUserObject().toString());
         }
     }
     
@@ -376,10 +385,9 @@ public class GUI extends javax.swing.JFrame {
         if(smd.getSelectionCount() > 0){
             
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
-            label.setText(selectedNode.getUserObject().toString());
-           
+           // label.setText(selectedNode.getUserObject().toString());
+            
         }
-        
     }//GEN-LAST:event_treePanelMouseClicked
 
     /**
