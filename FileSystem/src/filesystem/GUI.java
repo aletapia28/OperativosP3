@@ -15,6 +15,8 @@ import javax.swing.tree.TreeSelectionModel;
 
 import javax.swing.tree.DefaultMutableTreeNode; 
 import filesystem.Disk;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -242,23 +244,10 @@ public class GUI extends javax.swing.JFrame {
         File file = new File( name,extension, contenido, date, null);
 
         int sectoresNecesarios = (int) file.sectoresNecesarios(Integer.parseInt(tam), disk.sectorSize());
-
-        //obtener directorio actual
-        //agregarlo a la lista 
-        //agregarlo a los sectores libres
-        //saber cuantos sectores quedan libres
-        //obtener los primeros sectores libres
-
-        //Sector s = new Sector();
-        //agregarlo al disco
-
         
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(file);
-        
-        //int childsNum= jt.getModel().getChildCount(selectedNode);
-//        Object child = jt.getModel().getChild(selectedNode, 1);
-
+   
         Boolean nombre_repetido = name_check(selectedNode,name,extension);
         if(!nombre_repetido){
             selectedNode.add(newNode); 
@@ -276,20 +265,15 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         String name = JOptionPane.showInputDialog("Digite el nombre del directorio");
 
-        Dir dir = new Dir(name);
-
+        Dir dir = new Dir( name);
+        
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
-        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(dir.getName());
+        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
+        selectedNode.add(newNode); 
+        DefaultTreeModel model = (DefaultTreeModel)jt.getModel();
 
-        Boolean nombre_repetido = name_check(selectedNode,name,"");
-        if(!nombre_repetido){
-            selectedNode.add(newNode); 
-            DefaultTreeModel model = (DefaultTreeModel)jt.getModel();
+        model.reload();
 
-            model.reload();
-        }else{
-            JOptionPane.showMessageDialog(rootPane,"El nombre del directorio ya existe");
-        }
     }//GEN-LAST:event_mkdirActionPerformed
 
     private void modFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modFileActionPerformed
@@ -317,6 +301,13 @@ public class GUI extends javax.swing.JFrame {
 
     private void seePropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seePropertiesActionPerformed
         // TODO add your handling code here:
+        TreePath currentSelection = jt.getSelectionPath();
+        DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
+        File archivo = (File) currentNode.getUserObject();
+        System.out.println("ff");
+        System.out.println(archivo.getContent());
+        textPane.setText(archivo.getContent());
+        textPane.setVisible(true);
     }//GEN-LAST:event_seePropertiesActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
@@ -337,6 +328,18 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_searchActionPerformed
 
+    void doMouseClicked(MouseEvent me) {
+        TreePath tp = jt.getPathForLocation(me.getX(), me.getY());
+
+//        TreePath currentSelection = jt.getSelectionPath();
+        DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (tp.getLastPathComponent());
+//        File archivo = (File) currentNode.getUserObject();
+//        System.out.println("ff");
+//        System.out.println(archivo.getContent());
+        textPane.setText(currentNode.toString());
+        textPane.setVisible(true);
+}
+    
     private void createDiskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createDiskActionPerformed
         // TODO add your handling code here:
 
@@ -349,16 +352,18 @@ public class GUI extends javax.swing.JFrame {
                 Sector sector_n = new Sector(i,true);
                 sectors.add(sector_n);
         }
-    
-    
         disk = new Disk(name,Integer.parseInt(size), Integer.parseInt(cant_sector) ,sectors);
-    //    System.out.println(disk.toString());
 
         DefaultMutableTreeNode style=new DefaultMutableTreeNode(name);  
         jt = new javax.swing.JTree(style);
-        treePanel.setViewportView(jt);    
+        treePanel.setViewportView(jt);
+        jt.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent me) {
+                doMouseClicked(me);
+            }
+        });
         
-
+       
     }//GEN-LAST:event_createDiskActionPerformed
 
     private void jt(java.awt.event.MouseEvent evt){
@@ -370,7 +375,19 @@ public class GUI extends javax.swing.JFrame {
         }
     }
     
-    
+        
+    private void jtMouseClicked(java.awt.event.MouseEvent evt) {                                       
+        // TODO add your handling code here:
+        TreeSelectionModel smd = jt.getSelectionModel();
+        System.out.println(smd);
+        if(smd.getSelectionCount() > 0){
+            
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
+           // label.setText(selectedNode.getUserObject().toString());
+            
+        }
+    }                                      
+
     private void treePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treePanelMouseClicked
         // TODO add your handling code here:
         TreeSelectionModel smd = jt.getSelectionModel();
@@ -378,8 +395,9 @@ public class GUI extends javax.swing.JFrame {
             
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
             System.out.println(selectedNode);
+           // label.setText(selectedNode.getUserObject().toString());
+            
         }
-        
     }//GEN-LAST:event_treePanelMouseClicked
 
     /**
