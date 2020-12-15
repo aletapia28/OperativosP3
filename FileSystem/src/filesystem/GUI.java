@@ -40,26 +40,10 @@ public class GUI extends javax.swing.JFrame {
     JFrame f;  
     JTree jt; 
     Disk disk;
-    
-   
 
-
-
-    public String getFile() {
-        return File;
-    }
-
-    public void setFile(String File) {
-        this.File = File;
-    }
     public GUI() {
-        initComponents();
-//        JTree jt= new JTree();
-        
+        initComponents();   
         Disk disk = new Disk();
-        
-        
-
     }
 
     /**
@@ -229,7 +213,7 @@ public class GUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+                                        
     private void addFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFileActionPerformed
         // TODO add your handling code here:
             
@@ -304,9 +288,7 @@ public class GUI extends javax.swing.JFrame {
         TreePath currentSelection = jt.getSelectionPath();
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
         File archivo = (File) currentNode.getUserObject();
-        System.out.println("ff");
-        System.out.println(archivo.getContent());
-        textPane.setText(archivo.getContent());
+        textPane.setText(archivo.content+ "\n" + archivo.name);
         textPane.setVisible(true);
     }//GEN-LAST:event_seePropertiesActionPerformed
 
@@ -330,16 +312,17 @@ public class GUI extends javax.swing.JFrame {
 
     void doMouseClicked(MouseEvent me) {
         TreePath tp = jt.getPathForLocation(me.getX(), me.getY());
-
-//        TreePath currentSelection = jt.getSelectionPath();
-        DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (tp.getLastPathComponent());
-//        File archivo = (File) currentNode.getUserObject();
-//        System.out.println("ff");
-//        System.out.println(archivo.getContent());
-        textPane.setText(currentNode.toString());
+        if (tp != null){
+            //        TreePath currentSelection = jt.getSelectionPath();
+            DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (tp.getLastPathComponent());
+            File archivo = (File) currentNode.getUserObject();
+            textPane.setText(archivo.getContent());
+        }else{
+            textPane.setText("");
+        } 
         textPane.setVisible(true);
-}
-    
+    }
+
     private void createDiskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createDiskActionPerformed
         // TODO add your handling code here:
 
@@ -374,8 +357,7 @@ public class GUI extends javax.swing.JFrame {
             
         }
     }
-    
-        
+     
     private void jtMouseClicked(java.awt.event.MouseEvent evt) {                                       
         // TODO add your handling code here:
         TreeSelectionModel smd = jt.getSelectionModel();
@@ -399,7 +381,33 @@ public class GUI extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_treePanelMouseClicked
+    
+    public boolean name_check(DefaultMutableTreeNode parentNode, String name, String ext) {
+        boolean band = false;
+        int lim = parentNode.getChildCount();
+        if (lim != 0) {
+            for (int i = 0; i < lim; i++) {
+                DefaultMutableTreeNode temp = (DefaultMutableTreeNode) parentNode.getChildAt(i);
+                Object user = temp.getUserObject();
+                File file_aux = (File) user;
+                if (file_aux.getName().equals(name) && file_aux.getExtension().equals(ext)) {
+                    band = true;
+                }
+            }
+        }
+        return band;
+    }
 
+    public void modifyCurrentFileNode(String new_file_content) {
+        TreePath currentSelection = jt.getSelectionPath();
+        if (currentSelection != null) {
+            DefaultMutableTreeNode currentNode
+                    = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
+            File archivo = (File) currentNode.getUserObject();
+            archivo.setContent(new_file_content);
+
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -435,38 +443,7 @@ public class GUI extends javax.swing.JFrame {
         });
     }
 
-    private void addFile(File file){
-        
-    
-    }
 
-    public boolean name_check(DefaultMutableTreeNode parentNode,String name,String ext){
-        boolean band = false;
-        int lim = parentNode.getChildCount();
-        if(lim != 0){
-            for(int i=0;i<lim;i++){
-            DefaultMutableTreeNode temp = (DefaultMutableTreeNode) parentNode.getChildAt(i);
-            Object user = temp.getUserObject(); 
-            File file_aux = (File) user;
-                if(file_aux.getName().equals(name)&&file_aux.getExtension().equals(ext)){
-                    band = true;
-                }
-            }
-        }
-        return band;
-    }
-    
-    public void modifyCurrentFileNode(String new_file_content) {
-        TreePath currentSelection = jt.getSelectionPath();
-        if (currentSelection != null) {
-            DefaultMutableTreeNode currentNode =(DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
-            File archivo = (File) currentNode.getUserObject();
-            archivo.setContent(new_file_content);
-            
-        }
-        
-
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addFile;
     private javax.swing.JButton copyFile;
