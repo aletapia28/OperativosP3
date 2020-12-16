@@ -10,7 +10,6 @@ package filesystem;
  * @author aleta
  */
 public class Sector {
-    //public int id;
     private String nombre;
     private int numero_sector;
     private String contenido;
@@ -31,7 +30,13 @@ public class Sector {
 
     @Override
     public String toString() {
-        return "Sector{" + "id=" + ", isEmpty=" + isEmpty + '}';
+        return "Sector{" + "id="+ numero_sector + ", isEmpty=" + isEmpty + '}';
+    }
+
+ 
+
+    public boolean isIsEmpty() {
+        return isEmpty;
     }
     
     public String getNombre() {

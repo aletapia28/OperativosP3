@@ -27,6 +27,7 @@ public class Disk {
     public int size;
     public ArrayList<Sector> sectors;
     public int CantidadSectores;
+    public int sectoresDisponibles;
     
 
  
@@ -38,6 +39,7 @@ public class Disk {
         this.size = size;
         this.sectors = sectors;
         this.CantidadSectores = CantidadSectores;
+        this.sectoresDisponibles=CantidadSectores;
         
         
         System.out.println("disco creado");
@@ -47,6 +49,47 @@ public class Disk {
     public int sectorSize(){
         return this.size/ CantidadSectores;
     }
+
+    public int getSectoresDisponibles() {
+        return sectoresDisponibles;
+    }
+
+    public void setName(String Name) {
+        this.Name = Name;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public void setSectors(ArrayList<Sector> sectors) {
+        this.sectors = sectors;
+    }
+
+    public void setCantidadSectores(int CantidadSectores) {
+        this.CantidadSectores = CantidadSectores;
+    }
+
+    public void setSectoresDisponibles(int sectoresDisponibles) {
+        this.sectoresDisponibles = sectoresDisponibles;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public ArrayList<Sector> getSectors() {
+        return sectors;
+    }
+
+    public int getCantidadSectores() {
+        return CantidadSectores;
+    }
+    
 
 
 
