@@ -17,12 +17,18 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import filesystem.Disk;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.tree.TreePath;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -37,9 +43,17 @@ public class GUI extends javax.swing.JFrame {
      * Creates new form GUI
      */
     public String File;
+    private int cant_sectores=0;
+    private int tamaño_sector=0;
     JFrame f;  
     JTree jt; 
     Disk disk;
+    
+    File virtualDisk;
+    File filedisk;
+    FileWriter fwriter;
+    private ArrayList<Sector> disco_virtual;
+    
 
     public GUI() {
         initComponents();   
@@ -274,9 +288,11 @@ public class GUI extends javax.swing.JFrame {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
         Date date = new Date();
 
-        File file = new File( name,extension, contenido, date, null);
+        file file = new file( name,extension, contenido, date, null);
+            
+        add_disco(file);
 
-        int sectoresNecesarios = (int) file.sectoresNecesarios(Integer.parseInt(tam), disk.sectorSize());
+        //int sectoresNecesarios = (int) file.sectoresNecesarios(Integer.parseInt(tam), disk.sectorSize());
         
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(file);
@@ -336,7 +352,7 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         TreePath currentSelection = jt.getSelectionPath();
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
-        File archivo = (File) currentNode.getUserObject();
+        file archivo = (file) currentNode.getUserObject();
         
         fileName.setVisible(true);
         
@@ -383,7 +399,7 @@ public class GUI extends javax.swing.JFrame {
         if (tp != null){
             //        TreePath currentSelection = jt.getSelectionPath();
             DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (tp.getLastPathComponent());
-            File archivo = (File) currentNode.getUserObject();
+            file archivo = (file) currentNode.getUserObject();
             
             fileContent.setText(archivo.getContent());           
             
@@ -402,15 +418,18 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         String name = JOptionPane.showInputDialog("Digite el nombre del disco");
-        String size = JOptionPane.showInputDialog("Digite el tamaño del disco");
+        String size = JOptionPane.showInputDialog("Digite el tamaño del sector");
         String cant_sector = JOptionPane.showInputDialog("Digite la cantidad de sectores");
         ArrayList sectors = new ArrayList<Sector>();
 
         for(int i=0;i<Integer.parseInt(cant_sector);i++){
-                Sector sector_n = new Sector(i,true);
+                Sector sector_n = new Sector("", i, "", true, "");
                 sectors.add(sector_n);
         }
         disk = new Disk(name,Integer.parseInt(size), Integer.parseInt(cant_sector) ,sectors);
+        
+        file_system(name, cant_sector,size);
+        
 
         DefaultMutableTreeNode style=new DefaultMutableTreeNode(name);  
         jt = new javax.swing.JTree(style);
@@ -464,7 +483,7 @@ public class GUI extends javax.swing.JFrame {
             for (int i = 0; i < lim; i++) {
                 DefaultMutableTreeNode temp = (DefaultMutableTreeNode) parentNode.getChildAt(i);
                 Object user = temp.getUserObject();
-                File file_aux = (File) user;
+                file file_aux = (file) user;
                 if (file_aux.getName().equals(name) && file_aux.getExtension().equals(ext)) {
                     band = true;
                 }
@@ -478,10 +497,111 @@ public class GUI extends javax.swing.JFrame {
         if (currentSelection != null) {
             DefaultMutableTreeNode currentNode
                     = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
-            File archivo = (File) currentNode.getUserObject();
+            file archivo = (file) currentNode.getUserObject();
             archivo.setContent(new_file_content);
 
         }
+    }
+    
+    public void inicializa_disco(){
+        disco_virtual  = new ArrayList<>();
+        for(int i=0;i<cant_sectores;i++){
+            Sector sector_n = new Sector("", i, "", true, "");
+            disco_virtual.add(sector_n);
+        }
+        System.out.println(disco_virtual);
+    }
+    
+    public void file_system(String name, String sectores, String tamaño) {
+        BufferedWriter writer = null;
+        try {
+            filedisk = new File(name + ".txt");
+            boolean fvar = filedisk.createNewFile();
+            if (fvar) {
+                System.out.println("Disco Creado");
+                writer = new BufferedWriter(new FileWriter(filedisk));
+                int num_sector = Integer.parseInt(sectores);
+                int tam = Integer.parseInt(tamaño);
+                tamaño_sector = tam;
+                cant_sectores = num_sector;
+                inicializa_disco();
+                for (int i = 0; i < num_sector; i++) {
+                    int break_line = 0;
+                    for (int j = 0; j < tam; j++) {
+                        if (break_line < 50) {
+                            writer.write("*");
+                            writer.write('\n');
+                            break_line++;
+                        } else {
+                            break_line = 0;
+                            writer.write(System.getProperty("line.separator"));
+                            writer.write("*");
+                            writer.write('\n');
+                        }
+                    }
+                }
+                writer.close();
+            } else {
+                System.out.println("File already present at the specified location");
+            }
+        } catch (IOException e) {
+            System.out.println("Exception Occurred:");
+            e.printStackTrace();
+        }
+    }    
+ 
+    public int sectores_necesarios(int tamaño) {
+        int tam = 0;
+        double sec_necesitados = tamaño / tamaño_sector;
+        int sec_necesitados_aux = tamaño / tamaño_sector;
+        double res = sec_necesitados - sec_necesitados_aux;
+        if (res == 0) {
+            tam = sec_necesitados_aux;
+        } else {
+            tam = sec_necesitados_aux + 1;
+        }
+        return tam;
+    }   
+    public int sectores_disponibles(){
+        int sectores = 0;
+        for(Sector s : disco_virtual){
+            boolean estado = s.getEmpty();
+            if(estado)
+                sectores++;            
+        }
+        return sectores;
+    }    
+    
+    public boolean add_disco(file new_file) {
+        boolean band = false;
+        int linea = new_file.getContent().length();
+        System.out.println("largo:" + linea);
+        int sec_necesitados = sectores_necesarios(linea);
+        System.out.println("sectores:" + sec_necesitados);
+        if (sec_necesitados < sectores_disponibles()) {
+            int i = 0;
+            for (Sector s : disco_virtual) {
+                if (s.getEmpty() == true && i <= sec_necesitados) {
+                    s.setNombre(new_file.getName());
+                    s.setIsEmpty(false);
+                    int begin, end;
+                    if (i == sec_necesitados) {
+                        begin = i * tamaño_sector;
+                        end = linea - 1;
+                    } else {
+                        begin = i * tamaño_sector;
+                        end = ((i * tamaño_sector) + tamaño_sector) - 1;
+                    }
+                    System.out.println(i + "|" + begin + "-" + end);
+                    String content_aux = new_file.getContent().substring(begin, end);
+                    s.setContenido(content_aux);
+                    i++;
+                }
+            }
+            band = true;
+        }
+        System.out.println(disco_virtual);
+        return band;
     }
     /**
      * @param args the command line arguments

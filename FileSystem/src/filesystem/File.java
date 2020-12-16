@@ -13,7 +13,7 @@ import java.util.Date;
  *
  * @author aleta
  */
-public class File {
+public class file {
     
     String name;
     String extension;
@@ -25,7 +25,7 @@ public class File {
 //     
 
 
-    public File(String pname, String pExtension, String pContent, String pPath, int pSize) {
+    public file(String pname, String pExtension, String pContent, String pPath, int pSize) {
 
         
         this.name= pname;
@@ -43,7 +43,7 @@ public class File {
 
     }
 
-    public File(String name, String extension, String content, Date creationDate, Date modicationDate) {
+    public file(String name, String extension, String content, Date creationDate, Date modicationDate) {
         this.name = name;
         this.extension = extension;
         this.content = content;
@@ -51,7 +51,7 @@ public class File {
         this.modicationDate = modicationDate;
     }
 
-    public File(String name, String extension, String content, Date creationDate, Date modicationDate, int size, String path) {
+    public file(String name, String extension, String content, Date creationDate, Date modicationDate, int size, String path) {
         this.name = name;
         this.extension = extension;
         this.content = content;
@@ -128,6 +128,7 @@ public class File {
     public void setpath(String path) {
         this.path = path;
     }
+    
 
     // public void createFile(String pname, String pExtension, String pContent, String ppath){
     //     File file = new File();
