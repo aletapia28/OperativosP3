@@ -198,12 +198,12 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="filePath" min="-2" max="-2" attributes="0"/>
+                      <Component id="fileName" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="fileContent" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="fileDate" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="fileDateMod" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="fileSize" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="filePath" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="fileName" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="377" max="32767" attributes="0"/>
               </Group>
@@ -222,9 +222,9 @@
                   <Component id="fileDateMod" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                   <Component id="fileSize" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                   <Component id="filePath" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
+                  <EmptySpace pref="50" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -250,14 +250,14 @@
             <Property name="text" type="java.lang.String" value="mod"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="filePath">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="filePath"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="fileSize">
           <Properties>
             <Property name="text" type="java.lang.String" value="size"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="filePath">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="path"/>
           </Properties>
         </Component>
       </SubComponents>
