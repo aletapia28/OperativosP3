@@ -27,16 +27,15 @@ public class Sector {
         this.isEmpty = isEmpty;
         this.ruta = ruta;
     }
-
-    @Override
-    public String toString() {
-        return "Sector{" + "id="+ numero_sector + ", isEmpty=" + isEmpty + '}';
-    }
-
  
 
     public boolean isIsEmpty() {
         return isEmpty;
+    }
+
+    @Override
+    public String toString() {
+        return "Sector{" + "nombre=" + nombre + ", numero_sector=" + numero_sector + ", contenido=" + contenido + ", isEmpty=" + isEmpty  + '}';
     }
     
     public String getNombre() {

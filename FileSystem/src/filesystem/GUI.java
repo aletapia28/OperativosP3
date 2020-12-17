@@ -567,13 +567,22 @@ public class GUI extends javax.swing.JFrame {
         double sec_necesitados = new_file.sectoresNecesarios(size_contenido,tamaño_sector);
         System.out.println("sectores:" + sec_necesitados);
         if(sec_necesitados <= disk.sectoresDisponibles){
-            for(Sector s:disco_virtual){
-                if(s.isEmpty){
-                    escribir_sector(new_file.toFile(), s.getNumero_sector());
-                    
+            for(int i=0; i<sec_necesitados;i++){
+                for(Sector s:disco_virtual){
+                    if(s.isEmpty){
+                        s.setNombre(new_file.getName());
+                        s.setContenido(new_file.getContent());
+                        s.setIsEmpty(false);
+                        disk.setSectoresDisponibles(disk.getSectoresDisponibles()-1);
+                        System.out.println(disk.sectoresDisponibles);
+                        sec_necesitados--;
+                        break;
+                        
+                        //escribir_sector(new_file.toFile(), s.getNumero_sector());
+                    }
                 }
             }
-            
+            System.out.println(disco_virtual);
         }else{
             System.out.println("no hay espacio en el disco");
             
