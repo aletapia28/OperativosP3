@@ -5,6 +5,7 @@
  */
 package filesystem;
 
+import static com.sun.tools.javac.tree.TreeInfo.args;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -17,6 +18,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import filesystem.Disk;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -25,8 +27,12 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.tree.TreePath;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -563,7 +569,7 @@ public class GUI extends javax.swing.JFrame {
         if(sec_necesitados <= disk.sectoresDisponibles){
             for(Sector s:disco_virtual){
                 if(s.isEmpty){
-                    escribir_sector(new_file.toString(), s.getNumero_sector());
+                    escribir_sector(new_file.toFile(), s.getNumero_sector());
                     
                 }
             }
@@ -577,6 +583,8 @@ public class GUI extends javax.swing.JFrame {
     public void escribir_sector(String contenido, int num_sector){
         RandomAccessFile f;
         try {
+                  
+            insertStringInFile( filedisk,num_sector,contenido);
             f = new RandomAccessFile(new File(disk.getName()+".txt"), "rw");
             f.seek(num_sector - 1); // goes to where i want to write
             f.write(contenido.getBytes()); //writes the string in name
@@ -586,6 +594,35 @@ public class GUI extends javax.swing.JFrame {
             e.printStackTrace();
         }
         
+    }
+    public void insertStringInFile(File inFile, int lineno, String lineToBeInserted)
+            throws Exception {
+        // temp file
+        File outFile = new File("$$$$$$$$.tmp");
+
+        // input
+        FileInputStream fis = new FileInputStream(inFile);
+        BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+
+        // output         
+        FileOutputStream fos = new FileOutputStream(outFile);
+        PrintWriter out = new PrintWriter(fos);
+
+        String thisLine = "";
+        int i = 1;
+        while ((thisLine = in.readLine()) != null) {
+            if (i == lineno) {
+                out.println(lineToBeInserted);
+            }
+            out.println(thisLine);
+            i++;
+        }
+        out.flush();
+        out.close();
+        in.close();
+
+        inFile.delete();
+        outFile.renameTo(inFile);
     }
     /**
      * @param args the command line arguments
