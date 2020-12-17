@@ -21,6 +21,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
+import javax.swing.DropMode;
 import javax.swing.JOptionPane;
 import javax.swing.tree.TreePath;
 
@@ -50,6 +52,7 @@ public class GUI extends javax.swing.JFrame {
         fileDate.setVisible(false);
         fileDateMod.setVisible(false);
         fileSize.setVisible(false);
+        
     }
 
     /**
@@ -414,13 +417,27 @@ public class GUI extends javax.swing.JFrame {
 
         DefaultMutableTreeNode style=new DefaultMutableTreeNode(name);  
         jt = new javax.swing.JTree(style);
-        treePanel.setViewportView(jt);
+        
+//        jt.setDragEnabled(true);
+//        jt.setDropMode(DropMode.ON_OR_INSERT);
+//        jt.setTransferHandler(new TreeTransferHandler());
+//        jt.getSelectionModel().setSelectionMode(
+//                TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
+//        expandTree(jt);
+
+        
         jt.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent me) {
                 doMouseClicked(me);
             }
         });
         
+      
+    
+         treePanel.setViewportView(jt);
+         
+    
+       
        
     }//GEN-LAST:event_createDiskActionPerformed
 
@@ -486,6 +503,42 @@ public class GUI extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
+
+  
+    private void expandTree(JTree tree) {
+        DefaultMutableTreeNode root =
+            (DefaultMutableTreeNode)tree.getModel().getRoot();
+        Enumeration e = root.breadthFirstEnumeration();
+        while(e.hasMoreElements()) {
+            DefaultMutableTreeNode node =
+                (DefaultMutableTreeNode)e.nextElement();
+            if(node.isLeaf()) continue;
+            int row = tree.getRowForPath(new TreePath(node.getPath()));
+            tree.expandRow(row);
+        }
+}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -518,6 +571,16 @@ public class GUI extends javax.swing.JFrame {
         });
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addFile;
