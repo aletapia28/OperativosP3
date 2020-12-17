@@ -121,13 +121,7 @@ public class file {
         this.size = size;
     }
 
-    public String getpath() {
-        return this.path;
-    }
 
-    public void setpath(String path) {
-        this.path = path;
-    }
     
 
     // public void createFile(String pname, String pExtension, String pContent, String ppath){
@@ -159,7 +153,21 @@ public class file {
 
     
     public double sectoresNecesarios(int sizeFile, int sectorSize){
-       return (int) Math.ceil(sizeFile/sectorSize);
+        
+        int tam = (sizeFile%sectorSize);
+        int div = (sizeFile/sectorSize);
+        
+        
+        if(tam==0){
+            return div;
+        }
+        else{
+            return div+1;
+        }
+        
+        
+        
+        
        
     }
 

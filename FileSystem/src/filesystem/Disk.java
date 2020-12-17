@@ -42,7 +42,7 @@ public class Disk {
         this.sectoresDisponibles=CantidadSectores;
         
         
-        System.out.println("disco creado");
+        System.out.println("disco clase");
     }
     
     
