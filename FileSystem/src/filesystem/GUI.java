@@ -5,7 +5,6 @@
  */
 package filesystem;
 
-import static com.sun.tools.javac.tree.TreeInfo.args;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -36,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -100,6 +100,7 @@ public class GUI extends javax.swing.JFrame {
         fileContent = new javax.swing.JLabel();
         fileDate = new javax.swing.JLabel();
         fileDateMod = new javax.swing.JLabel();
+        filePath = new javax.swing.JLabel();
         fileSize = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -230,6 +231,8 @@ public class GUI extends javax.swing.JFrame {
 
         fileDateMod.setText("mod");
 
+        filePath.setText("filePath");
+
         fileSize.setText("size");
 
         javax.swing.GroupLayout textPaneLayout = new javax.swing.GroupLayout(textPane);
@@ -237,20 +240,20 @@ public class GUI extends javax.swing.JFrame {
         textPaneLayout.setHorizontalGroup(
             textPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(textPaneLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(26, 26, 26)
                 .addGroup(textPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fileContent)
-                    .addComponent(fileName)
                     .addComponent(fileDate)
-                    .addGroup(textPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(fileSize)
-                        .addComponent(fileDateMod)))
-                .addContainerGap(373, Short.MAX_VALUE))
+                    .addComponent(fileDateMod)
+                    .addComponent(fileSize)
+                    .addComponent(filePath)
+                    .addComponent(fileName))
+                .addContainerGap(377, Short.MAX_VALUE))
         );
         textPaneLayout.setVerticalGroup(
             textPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(textPaneLayout.createSequentialGroup()
-                .addGap(94, 94, 94)
+                .addGap(48, 48, 48)
                 .addComponent(fileName)
                 .addGap(68, 68, 68)
                 .addComponent(fileContent)
@@ -260,7 +263,9 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(fileDateMod)
                 .addGap(44, 44, 44)
                 .addComponent(fileSize)
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(filePath)
+                .addGap(58, 58, 58))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -292,23 +297,34 @@ public class GUI extends javax.swing.JFrame {
         String name = JOptionPane.showInputDialog("Digite el nombre del archivo");
         String extension = JOptionPane.showInputDialog("Digite la extension");
         String contenido = JOptionPane.showInputDialog("Digite el contenido"); 
-        String tam = JOptionPane.showInputDialog("Digite el tamaño");
+       
+
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
         Date date = new Date();
 
-        file file = new file( name,extension, contenido, date, null);
-            
+    
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
-        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(file);
+       
+        String path= crearPath(jt.getSelectionPath().getPath());
+        
+        path= path + name;
+               
+        
+        System.out.println("path creado : " + path);
+        file file = new file(  name,extension, contenido, date, null,contenido.length(),path);
+        
+        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(file);     
+                       
    
         Boolean nombre_repetido = name_check(selectedNode,name,extension);
         if(!nombre_repetido){
-            add_file(file);
-            selectedNode.add(newNode); 
-            DefaultTreeModel model = (DefaultTreeModel)jt.getModel();
+            if(add_file(file)){            
+                selectedNode.add(newNode); 
+                DefaultTreeModel model = (DefaultTreeModel)jt.getModel();
+                model.reload();
+            }
 
-            model.reload();
         }else{
             JOptionPane.showMessageDialog(rootPane,"El nombre del archivo ya existe");
         }
@@ -366,15 +382,17 @@ public class GUI extends javax.swing.JFrame {
         fileDate.setVisible(true);
         fileDateMod.setVisible(true);
         fileSize.setVisible(true);
+        filePath.setVisible(true);
 
         
         
         fileName.setText("Nombre: " + archivo.getName()+"."+ archivo.getExtension());
 //        fileExt.setText(archivo.getExtension());
-        fileContent.setText("Contenido: " + archivo.getContent());
+        fileContent.setText("Contenido: " + archivo.getPath());
         fileDate.setText("Fecha Creacion: " + archivo.getCreationDate().toString());
         fileDateMod.setText("Fecha Modificacion: " +archivo.getModicationDate().toString());
-        fileSize.setText("Tamaño: " +String.valueOf(archivo.getSize()));
+//        fileSize.setText("Tamaño: " +String.valueOf(archivo.getSize()));
+        filePath.setText("ad");
         
         
         
@@ -429,6 +447,10 @@ public class GUI extends javax.swing.JFrame {
         ArrayList sectors = new ArrayList<Sector>();
 
         disk = new Disk(name,Integer.parseInt(size), Integer.parseInt(cant_sector) ,sectors);
+        
+        tamaño_sector= Integer.parseInt(size);
+        
+        
         file_system(name, cant_sector,size);
         
 
@@ -521,10 +543,11 @@ public class GUI extends javax.swing.JFrame {
     public void inicializa_disco(){
         disco_virtual  = new ArrayList<>();
         for(int i=0;i<cant_sectores;i++){
-            Sector sector_n = new Sector("", i, "", true, "");
+            Sector sector_n = new Sector("", i, "", true, "",null);
             disco_virtual.add(sector_n);
         }
-        System.out.println(disco_virtual);
+        System.out.println(disco_virtual.toString());
+        
     }
     
     public void file_system(String name, String sectores, String tamaño) {
@@ -549,6 +572,7 @@ public class GUI extends javax.swing.JFrame {
                 writer.close();
             } else {
                 System.out.println("File already present at the specified location");
+                JOptionPane.showMessageDialog(rootPane,"Error al crear el disco");
             }
         } catch (IOException e) {
             System.out.println("Exception Occurred:");
@@ -578,78 +602,71 @@ public class GUI extends javax.swing.JFrame {
         return sectores;
     }    
     
-    public void add_file(file new_file) {
+    public boolean add_file(file new_file) {
         int size_contenido = new_file.getContent().length();
-        System.out.println("largo:" + size_contenido);
+
         double sec_necesitados = new_file.sectoresNecesarios(size_contenido,tamaño_sector);
-        System.out.println("sectores:" + sec_necesitados);
-        if(sec_necesitados <= disk.sectoresDisponibles){
+
+        double necesitados=sec_necesitados;       
+        
+        if(necesitados <= disk.sectoresDisponibles){
             for(int i=0; i<sec_necesitados;i++){
+
                 for(Sector s:disco_virtual){
+                    System.out.println(s);
                     if(s.isEmpty){
                         s.setNombre(new_file.getName());
                         s.setContenido(new_file.getContent());
                         s.setIsEmpty(false);
+                        s.setRuta(new_file.getPath());
+                        s.setFile(new_file);
+                        
+                        
                         disk.setSectoresDisponibles(disk.getSectoresDisponibles()-1);
-                        System.out.println(disk.sectoresDisponibles);
-                        sec_necesitados--;
+       
+                        necesitados--;
+                        escribir();
                         break;
+                        
+                        
                         
                         //escribir_sector(new_file.toFile(), s.getNumero_sector());
                     }
                 }
             }
-            System.out.println(disco_virtual);
+//            System.out.println(disco_virtual);
         }else{
             System.out.println("no hay espacio en el disco");
+            JOptionPane.showMessageDialog(rootPane,"No hay sectores suficientees");
+            return false;
             
         }
         
-    }
-    public void escribir_sector(String contenido, int num_sector){
-        RandomAccessFile f;
-        try {
-                  
-            insertStringInFile( filedisk,num_sector,contenido);
-            f = new RandomAccessFile(new File(disk.getName()+".txt"), "rw");
-            f.seek(num_sector - 1); // goes to where i want to write
-            f.write(contenido.getBytes()); //writes the string in name
-            f.close();
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        return true;
         
     }
-    public void insertStringInFile(File inFile, int lineno, String lineToBeInserted)
-            throws Exception {
-        // temp file
-        File outFile = new File("$$$$$$$$.tmp");
+    
 
-        // input
-        FileInputStream fis = new FileInputStream(inFile);
-        BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-
-        // output         
-        FileOutputStream fos = new FileOutputStream(outFile);
-        PrintWriter out = new PrintWriter(fos);
-
-        String thisLine = "";
-        int i = 1;
-        while ((thisLine = in.readLine()) != null) {
-            if (i == lineno) {
-                out.println(lineToBeInserted);
+    public void escribir(){
+        RandomAccessFile f;
+        try {                 
+            f = new RandomAccessFile(new File(disk.getName()+".txt"), "rw");
+            for(Sector s:disco_virtual){
+                if(s.getEmpty()){                    
+                    f.write("sector vacio".getBytes());
+                    f.write("\n".getBytes());                      
+                }else{
+                     f.write(s.toString().getBytes());
+                      f.write("\n".getBytes());                    
+                }              
             }
-            out.println(thisLine);
-            i++;
-        }
-        out.flush();
-        out.close();
-        in.close();
-
-        inFile.delete();
-        outFile.renameTo(inFile);
+            f.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }       
     }
+    
+
     /**
      * @param args the command line arguments
      */
@@ -669,11 +686,28 @@ public class GUI extends javax.swing.JFrame {
         }
 }
     
+
     
     
     
-    
-    
+        private String crearPath(Object[] path) {
+            
+//            System.out.println(path.toString());
+//        System.out.println("paht"+ path.length + path.toString());
+        String p="";
+        for(int i=0; i<path.length; i++){
+//            System.out.println(path[i]);
+            p+=path[i].toString();
+            p+="/";
+        }
+//        System.out.println(path);
+      
+        
+        
+        
+        return p;
+    }
+
     
     
     
@@ -741,6 +775,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel fileDate;
     private javax.swing.JLabel fileDateMod;
     private javax.swing.JLabel fileName;
+    private javax.swing.JLabel filePath;
     private javax.swing.JLabel fileSize;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton mkdir;
@@ -751,6 +786,9 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel textPane;
     public javax.swing.JScrollPane treePanel;
     // End of variables declaration//GEN-END:variables
+
+
+
 
 
 }

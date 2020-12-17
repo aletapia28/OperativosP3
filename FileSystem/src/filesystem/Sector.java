@@ -15,17 +15,26 @@ public class Sector {
     private String contenido;
     public boolean isEmpty;
     private String ruta;
-
+    public file file;
 
     public Sector() {
     }
 
-    public Sector(String nombre, int numero_sector, String contenido, boolean isEmpty, String ruta) {
+    public Sector(String nombre, int numero_sector, String contenido, boolean isEmpty, String ruta, file file) {
         this.nombre = nombre;
         this.numero_sector = numero_sector;
         this.contenido = contenido;
         this.isEmpty = isEmpty;
         this.ruta = ruta;
+        this.file= file;
+    }
+
+    public file getFile() {
+        return file;
+    }
+
+    public void setFile(file file) {
+        this.file = file;
     }
  
 
@@ -35,7 +44,7 @@ public class Sector {
 
     @Override
     public String toString() {
-        return "Sector{" + "nombre=" + nombre + ", numero_sector=" + numero_sector + ", contenido=" + contenido + ", isEmpty=" + isEmpty  + '}';
+        return "Sector{" + "nombre=" + nombre + ", numero_sector=" + numero_sector + ", contenido=" + contenido + ", isEmpty=" + isEmpty  + " path: "+ ruta+ '}';
     }
     
     public String getNombre() {
