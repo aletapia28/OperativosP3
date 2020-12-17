@@ -15,7 +15,7 @@ public class Dir {
     
 
     private String Name;
-    private ArrayList<File> files;
+    private ArrayList<file> files;
     private ArrayList<Dir> dirs;
 
     public Dir(String Name) {
@@ -32,11 +32,11 @@ public class Dir {
         this.Name = Name;
     }
 
-    public ArrayList<File> getFiles() {
+    public ArrayList<file> getFiles() {
         return files;
     }
 
-    public void setFiles(ArrayList<File> files) {
+    public void setFiles(ArrayList<file> files) {
         this.files = files;
     }
 
