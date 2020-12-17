@@ -1,0 +1,23 @@
+Sector{nombre=das, numero_sector=0, contenido=23, isEmpty=false path: dassd/}
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
