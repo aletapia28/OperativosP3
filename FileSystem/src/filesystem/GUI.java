@@ -343,7 +343,7 @@ public class GUI extends javax.swing.JFrame {
             model.reload();
         }
         else{
-         JOptionPane.showMessageDialog(rootPane, "Nombre de directori Repetido\n Intente otro nombre");   
+         JOptionPane.showMessageDialog(rootPane, "Nombre de directorio Repetido\n Intente otro nombre");   
         }
 
     }//GEN-LAST:event_mkdirActionPerformed
