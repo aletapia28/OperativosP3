@@ -182,7 +182,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        jBuscar.setIcon(new javax.swing.ImageIcon("/Users/melaniebermudez/Desktop/OperativosP3/FileSystem/lups.png")); // NOI18N
+        jBuscar.setIcon(new javax.swing.ImageIcon("C:\\Users\\aleta\\Desktop\\OperativosP3\\FileSystem\\lups.png")); // NOI18N
         jBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBuscarActionPerformed(evt);
@@ -226,7 +226,7 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createDisk)
                     .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jBuscar))
+                    .addComponent(jBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addFile)
@@ -265,7 +265,6 @@ public class GUI extends javax.swing.JFrame {
         jTextArea1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jTextArea1.setCaretColor(new java.awt.Color(238, 238, 238));
         jTextArea1.setDisabledTextColor(new java.awt.Color(238, 238, 238));
-        jTextArea1.setDragEnabled(false);
         jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout textPaneLayout = new javax.swing.GroupLayout(textPane);
