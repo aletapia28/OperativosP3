@@ -67,6 +67,7 @@ public class GUI extends javax.swing.JFrame {
         fileDateMod.setVisible(false);
         fileSize.setVisible(false);
         filePath.setVisible(false);
+        jTextArea1.setVisible(false);
     }
 
     /**
@@ -88,6 +89,7 @@ public class GUI extends javax.swing.JFrame {
         delete = new javax.swing.JButton();
         search = new javax.swing.JTextField();
         createDisk = new javax.swing.JButton();
+        jBuscar = new javax.swing.JButton();
         treePanel = new javax.swing.JScrollPane();
         textPane = new javax.swing.JPanel();
         fileName = new javax.swing.JLabel();
@@ -96,6 +98,9 @@ public class GUI extends javax.swing.JFrame {
         fileDateMod = new javax.swing.JLabel();
         fileSize = new javax.swing.JLabel();
         filePath = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        lbl1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -152,6 +157,18 @@ public class GUI extends javax.swing.JFrame {
 
         search.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         search.setText("Buscar");
+        search.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchMouseClicked(evt);
+            }
+        });
+        search.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                searchInputMethodTextChanged(evt);
+            }
+        });
         search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchActionPerformed(evt);
@@ -162,6 +179,13 @@ public class GUI extends javax.swing.JFrame {
         createDisk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createDiskActionPerformed(evt);
+            }
+        });
+
+        jBuscar.setIcon(new javax.swing.ImageIcon("/Users/melaniebermudez/Desktop/OperativosP3/FileSystem/lups.png")); // NOI18N
+        jBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBuscarActionPerformed(evt);
             }
         });
 
@@ -181,25 +205,29 @@ public class GUI extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(modFile)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(seeProperties))
-                    .addComponent(createDisk))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(seeProperties)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(copyFile)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(delete)))
+                        .addComponent(delete))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(createDisk)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jBuscar)
+                        .addGap(7, 7, 7)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createDisk)
-                    .addComponent(search, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
+                    .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBuscar))
+                .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addFile)
                     .addComponent(mkdir)
@@ -208,7 +236,7 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(copyFile)
                     .addComponent(seeProperties)
                     .addComponent(delete))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         treePanel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -229,6 +257,17 @@ public class GUI extends javax.swing.JFrame {
 
         filePath.setText("path");
 
+        jTextArea1.setEditable(false);
+        jTextArea1.setBackground(new java.awt.Color(238, 238, 238));
+        jTextArea1.setColumns(20);
+        jTextArea1.setLineWrap(true);
+        jTextArea1.setRows(5);
+        jTextArea1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jTextArea1.setCaretColor(new java.awt.Color(238, 238, 238));
+        jTextArea1.setDisabledTextColor(new java.awt.Color(238, 238, 238));
+        jTextArea1.setDragEnabled(false);
+        jScrollPane1.setViewportView(jTextArea1);
+
         javax.swing.GroupLayout textPaneLayout = new javax.swing.GroupLayout(textPane);
         textPane.setLayout(textPaneLayout);
         textPaneLayout.setHorizontalGroup(
@@ -236,22 +275,26 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(textPaneLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(textPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fileSize)
                     .addComponent(filePath)
-                    .addComponent(fileName)
-                    .addComponent(fileContent)
-                    .addComponent(fileDate)
                     .addComponent(fileDateMod)
-                    .addComponent(fileSize))
+                    .addComponent(fileDate)
+                    .addComponent(fileContent)
+                    .addComponent(fileName)
+                    .addComponent(lbl1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         textPaneLayout.setVerticalGroup(
             textPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(textPaneLayout.createSequentialGroup()
-                .addGap(48, 48, 48)
+                .addGap(16, 16, 16)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
                 .addComponent(fileName)
                 .addGap(18, 18, 18)
                 .addComponent(fileContent)
-                .addGap(43, 43, 43)
+                .addGap(22, 22, 22)
                 .addComponent(fileDate)
                 .addGap(47, 47, 47)
                 .addComponent(fileDateMod)
@@ -259,7 +302,9 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(fileSize)
                 .addGap(34, 34, 34)
                 .addComponent(filePath)
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addGap(28, 28, 28)
+                .addComponent(lbl1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -278,7 +323,7 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(treePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+                    .addComponent(treePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
                     .addComponent(textPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
@@ -437,7 +482,8 @@ public class GUI extends javax.swing.JFrame {
         fileDateMod.setText("Fecha Modificacion: " + archivo.getModicationDate());
         fileSize.setText("Tamaño: " + archivo.getSize());
         filePath.setText("Path: " + archivo.getPath());
-
+        
+        jTextArea1.setVisible(false);
         fileName.setVisible(true);
         fileContent.setVisible(true);
         fileDate.setVisible(true);
@@ -455,6 +501,11 @@ public class GUI extends javax.swing.JFrame {
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
         // TODO add your handling code here:
+        String busqueda = search.getText();
+        System.out.println(busqueda);  
+        
+        
+        
     }//GEN-LAST:event_searchActionPerformed
 
     void doMouseClicked(MouseEvent me) {
@@ -537,6 +588,57 @@ public class GUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_treePanelMouseClicked
 
+    private void searchInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_searchInputMethodTextChanged
+        // TODO add your handling code here:
+        ArrayList<file> encontrados = new ArrayList<file>();
+        String busqueda = search.getText();
+        System.out.println(busqueda);
+        System.out.println(disco_virtual);
+        for (Sector s : disco_virtual) {
+            System.out.println(s.getFile().getNameExt());
+            if (s.getFile().getNameExt().contains(busqueda)) {
+                encontrados.add(s.getFile());
+            }
+        }
+        System.out.println(encontrados.toString());
+        
+        
+        
+        
+    }//GEN-LAST:event_searchInputMethodTextChanged
+
+    private void searchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchMouseClicked
+        // TODO add your handling code here:
+        search.setText("");
+    }//GEN-LAST:event_searchMouseClicked
+
+    private void jBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBuscarActionPerformed
+        // TODO add your handling code here:
+        jTextArea1.setText("");
+        jTextArea1.setVisible(true);
+        fileName.setVisible(false);
+        fileContent.setVisible(false);
+        fileDate.setVisible(false);
+        fileDateMod.setVisible(false);
+        fileSize.setVisible(false);
+        filePath.setVisible(false);
+        
+        ArrayList<String> encontrados = new ArrayList<String>();
+        String busqueda = search.getText();
+        for (Sector s : disco_virtual) {
+            if(!s.isEmpty){
+                System.out.println(s.file.getNameExt());
+                if (s.getFile().getNameExt().contains(busqueda)) {
+                    encontrados.add(s.getFile().getNameExt());
+                    jTextArea1.append(s.getFile().getNameExt()+'\n');
+                  
+                }
+            }
+        }
+        System.out.println("encontrados" + encontrados);
+        
+    }//GEN-LAST:event_jBuscarActionPerformed
+
     public boolean name_check(DefaultMutableTreeNode parentNode, String name, String ext) {
         boolean band = false;
         int lim = parentNode.getChildCount();
@@ -553,7 +655,7 @@ public class GUI extends javax.swing.JFrame {
         return band;
     }
     
-        public boolean dir_check(DefaultMutableTreeNode parentNode, String name) {
+    public boolean dir_check(DefaultMutableTreeNode parentNode, String name) {
         boolean band = false;
         int lim = parentNode.getChildCount();
         if (lim != 0) {
@@ -835,7 +937,11 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel fileName;
     private javax.swing.JLabel filePath;
     private javax.swing.JLabel fileSize;
+    private javax.swing.JButton jBuscar;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JLabel lbl1;
     private javax.swing.JButton mkdir;
     private javax.swing.JButton modFile;
     private javax.swing.JButton moveDir;

@@ -156,7 +156,9 @@ public class file {
      public String toFile() {
         return "name: " + name + " extension: " + extension + " content: " + content;
     }
-
+     public String getNameExt() {
+        return " path:  " + path + name + "." + extension ;
+    }
     
     public double sectoresNecesarios(int sizeFile, int sectorSize){
         
