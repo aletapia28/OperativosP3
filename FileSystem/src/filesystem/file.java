@@ -109,8 +109,11 @@ public class file {
         return this.modicationDate;
     }
 
-    public void setModicationDate(Date ModicationDate) {
-        this.modicationDate = modicationDate;
+    public void setModicationDate() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
+        Date date = new Date();
+        System.out.println("modficadasda");
+        this.modicationDate = date;
     }
 
     public int getSize() {

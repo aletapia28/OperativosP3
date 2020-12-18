@@ -10,12 +10,13 @@ package filesystem;
  * @author aleta
  */
 public class Sector {
+
     private String nombre;
     private int numero_sector;
     private String contenido;
-    public boolean isEmpty;
+    public  boolean isEmpty;
     private String ruta;
-    public file file;
+    public  file file;
 
     public Sector() {
     }
@@ -26,7 +27,7 @@ public class Sector {
         this.contenido = contenido;
         this.isEmpty = isEmpty;
         this.ruta = ruta;
-        this.file= file;
+        this.file = file;
     }
 
     public file getFile() {
@@ -36,7 +37,6 @@ public class Sector {
     public void setFile(file file) {
         this.file = file;
     }
- 
 
     public boolean isIsEmpty() {
         return isEmpty;
@@ -44,9 +44,9 @@ public class Sector {
 
     @Override
     public String toString() {
-        return "Sector{" + "nombre=" + nombre + ", numero_sector=" + numero_sector + ", contenido=" + contenido + ", isEmpty=" + isEmpty  + " path: "+ ruta+ '}';
+        return "Sector{" + "nombre=" + nombre + ", numero_sector=" + numero_sector + ", contenido=" + contenido + ", isEmpty=" + isEmpty + " path: " + ruta + '}';
     }
-    
+
     public String getNombre() {
         return nombre;
     }
@@ -70,7 +70,7 @@ public class Sector {
     public void setContenido(String contenido) {
         this.contenido = contenido;
     }
-    
+
     public boolean getEmpty() {
         return isEmpty;
     }
@@ -78,7 +78,7 @@ public class Sector {
     public void setIsEmpty(boolean isEmpty) {
         this.isEmpty = isEmpty;
     }
-    
+
     public String getRuta() {
         return ruta;
     }
@@ -86,8 +86,13 @@ public class Sector {
     public void setRuta(String ruta) {
         this.ruta = ruta;
     }
-    
-    
 
+    public void resetSector(Sector s) {
+        s.setNombre("");
+        s.setContenido("");
+        s.setIsEmpty(true);
+        s.setRuta("");
+        s.setFile(null);
+    }
 
 }

@@ -1,0 +1,23 @@
+Sector{nombre=a, numero_sector=0, contenido=a, isEmpty=false path: fisco/}
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
