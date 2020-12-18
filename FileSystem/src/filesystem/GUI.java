@@ -420,7 +420,7 @@ public class GUI extends javax.swing.JFrame {
                         temp.setSize(contenido.length());
                         temp.setPath(archivo.getPath());
 
-                        delete();
+                        deleteNode(selectedNode);
                         addTree(temp, parent);
 
                         break;
@@ -765,7 +765,11 @@ public class GUI extends javax.swing.JFrame {
         int size_contenido = new_file.getContent().length();
         double sec_necesitados = new_file.sectoresNecesarios(size_contenido, tamaño_sector);
         double necesitados = sec_necesitados;
-
+        
+        System.out.println("sec necesitados" + necesitados);
+        System.out.println("sec disp" + disk.sectoresDisponibles);
+        System.out.println("sec_necesitados" + sec_necesitados);
+        System.out.println("sec get disp" + disk.getSectoresDisponibles());
         if (necesitados <= disk.sectoresDisponibles) {
             for (int i = 0; i < sec_necesitados; i++) {
                 for (Sector s : disco_virtual) {
@@ -846,24 +850,27 @@ public class GUI extends javax.swing.JFrame {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
         file file = (file) selectedNode.getUserObject();
         String fullName = getFullName(file);
-
+        Boolean borrar  =false;
         if (selectedNode != jt.getModel().getRoot()) {
             for (Sector s : disco_virtual) {
                 if (!s.isEmpty) {
                     String name = getFullName(s.getFile());
-                    System.out.println(name);
-                    System.out.println(fullName);
                     if (name.equals(fullName)) {
-                        //borrar archivo  
-                        System.out.println("etnora comaodamdoracion");
+                        borrar = true;
+                        System.out.println("dentro if delete");
                         s.resetSector(s);
-                        DefaultTreeModel model = (DefaultTreeModel) jt.getModel();
-                        model.removeNodeFromParent(selectedNode);
-                        model.nodeChanged(selectedNode);
+                        disk.setSectoresDisponibles(disk.getSectoresDisponibles() +1);
                         escribir();
                     }
                 }
             }
+            if(borrar){
+                System.out.println("borrar ");
+                DefaultTreeModel model = (DefaultTreeModel) jt.getModel();
+                model.removeNodeFromParent(selectedNode);
+                model.nodeChanged(selectedNode);
+            }
+
         }
 
     }

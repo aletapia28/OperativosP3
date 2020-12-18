@@ -1,0 +1,5 @@
+Sector{nombre=a1, numero_sector=0, contenido=12345, isEmpty=false path: d87/d1/}
+Sector{nombre=b1, numero_sector=1, contenido=12345, isEmpty=false path: d87/d1/}
+sector vacio
+Sector{nombre=c1, numero_sector=3, contenido=1234567890, isEmpty=false path: d87/d1/}
+Sector{nombre=d6, numero_sector=4, contenido=123, isEmpty=false path: d87/d1/}
