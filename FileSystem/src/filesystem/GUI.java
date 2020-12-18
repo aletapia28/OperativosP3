@@ -332,15 +332,19 @@ public class GUI extends javax.swing.JFrame {
     private void mkdirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mkdirActionPerformed
         // TODO add your handling code here:
         String name = JOptionPane.showInputDialog("Digite el nombre del directorio");
-
-        Dir dir = new Dir(name);
-
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
-        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
-        selectedNode.add(newNode);
-        DefaultTreeModel model = (DefaultTreeModel) jt.getModel();
-
-        model.reload();
+//        Dir dir = new Dir(name);
+        
+        Boolean nombre_repetido = dir_check(selectedNode, name);
+        if (!nombre_repetido) {       
+            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
+            selectedNode.add(newNode);
+            DefaultTreeModel model = (DefaultTreeModel) jt.getModel();
+            model.reload();
+        }
+        else{
+         JOptionPane.showMessageDialog(rootPane, "Nombre de directori Repetido\n Intente otro nombre");   
+        }
 
     }//GEN-LAST:event_mkdirActionPerformed
 
@@ -542,6 +546,21 @@ public class GUI extends javax.swing.JFrame {
                 Object user = temp.getUserObject();
                 file file_aux = (file) user;
                 if (file_aux.getName().equals(name) && file_aux.getExtension().equals(ext)) {
+                    band = true;
+                }
+            }
+        }
+        return band;
+    }
+    
+        public boolean dir_check(DefaultMutableTreeNode parentNode, String name) {
+        boolean band = false;
+        int lim = parentNode.getChildCount();
+        if (lim != 0) {
+            for (int i = 0; i < lim; i++) {
+                DefaultMutableTreeNode temp = (DefaultMutableTreeNode) parentNode.getChildAt(i);
+                 System.out.println(temp.toString());
+                if (temp.toString().equals(name)) {
                     band = true;
                 }
             }

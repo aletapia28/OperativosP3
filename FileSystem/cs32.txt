@@ -1,0 +1,23 @@
+Sector{nombre=ads, numero_sector=0, contenido=das, isEmpty=false path: cs32/filesystem.Dir@7d173e/}
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
+sector vacio
