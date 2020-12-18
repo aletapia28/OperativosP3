@@ -1,2 +1,0 @@
-Sector{nombre=asd, numero_sector=0, contenido=as, isEmpty=false path: di12/}
-sector vacio

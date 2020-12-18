@@ -116,6 +116,9 @@ public class file {
         this.modicationDate = date;
     }
 
+    public file() {
+    }
+
     public int getSize() {
         return this.size;
     }
