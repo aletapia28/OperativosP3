@@ -13,7 +13,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
-import javax.swing.tree.DefaultMutableTreeNode; 
+import javax.swing.tree.DefaultMutableTreeNode;
 import filesystem.Disk;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -43,25 +43,24 @@ import java.util.logging.Logger;
 /**
  *
  * @author aleta
- * 
- * 
+ *
+ *
  */
-
 public class GUI extends javax.swing.JFrame {
+
     public String File;
-    private int cant_sectores=0;
-    private int tamaño_sector=0;
-    JFrame f;  
-    JTree jt; 
+    private int cant_sectores = 0;
+    private int tamaño_sector = 0;
+    JFrame f;
+    JTree jt;
     Disk disk;
     File virtualDisk;
     File filedisk;
     private ArrayList<Sector> disco_virtual;
-    
 
     public GUI() {
-        initComponents();   
-        Disk disk = new Disk();        
+        initComponents();
+        Disk disk = new Disk();
         fileName.setVisible(false);
         fileContent.setVisible(false);
         fileDate.setVisible(false);
@@ -285,42 +284,61 @@ public class GUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-                                        
+
     private void addFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFileActionPerformed
         // TODO add your handling code here:
-            
+
         String name = JOptionPane.showInputDialog("Digite el nombre del archivo");
         String extension = JOptionPane.showInputDialog("Digite la extension");
-        String contenido = JOptionPane.showInputDialog("Digite el contenido"); 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
+        String contenido = JOptionPane.showInputDialog("Digite el contenido");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
-        String path= crearPath(jt.getSelectionPath().getPath());
-        file file = new file(  name,extension, contenido, date, null,contenido.length(),path);
-        
-        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(file);     
-        Boolean nombre_repetido = name_check(selectedNode,name,extension);
-        if(!nombre_repetido){
-            if(add_file(file)){            
-                selectedNode.add(newNode); 
-                DefaultTreeModel model = (DefaultTreeModel)jt.getModel();
-                model.reload();
-            }
-        }else{
-            JOptionPane.showMessageDialog(rootPane,"El nombre del archivo ya existe");
-        }
+        String path = crearPath(jt.getSelectionPath().getPath());
+        file file = new file(name, extension, contenido, date, null, contenido.length(), path);
+
+        addTree(file, selectedNode);
     }//GEN-LAST:event_addFileActionPerformed
 
+    private void addTree(file file, DefaultMutableTreeNode selectedNode) {
+        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(file);
+        Boolean nombre_repetido = name_check(selectedNode, file.getName(), file.getExtension());
+        if (!nombre_repetido) {
+            if (add_file(file)) {
+                selectedNode.add(newNode);
+                DefaultTreeModel model = (DefaultTreeModel) jt.getModel();
+                model.reload();
+            }
+        } else {
+            int result = JOptionPane.showConfirmDialog(null, "Ya existe ese nombre, desea reemplazarlo");
+            System.out.println(result);
+
+            if (result == 0) {
+                DefaultMutableTreeNode RepeatNode = getRepeatNode(selectedNode, file.getName(), file.getExtension());
+                deleteNode(RepeatNode);
+                if (add_file(file)) {
+                    selectedNode.add(newNode);
+                    DefaultTreeModel model = (DefaultTreeModel) jt.getModel();
+                    model.reload();
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "No se pudo crear el archivo");
+            }
+
+        }
+
+    }
     private void mkdirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mkdirActionPerformed
         // TODO add your handling code here:
         String name = JOptionPane.showInputDialog("Digite el nombre del directorio");
 
-        Dir dir = new Dir( name);
-        
+        Dir dir = new Dir(name);
+
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
-        selectedNode.add(newNode); 
-        DefaultTreeModel model = (DefaultTreeModel)jt.getModel();
+        selectedNode.add(newNode);
+        DefaultTreeModel model = (DefaultTreeModel) jt.getModel();
 
         model.reload();
 
@@ -329,88 +347,100 @@ public class GUI extends javax.swing.JFrame {
     private void modFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modFileActionPerformed
         // TODO add your handling code here:
 
-        String contenido = JOptionPane.showInputDialog("Digite el contenido"); 
-        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent(); 
+        String contenido = JOptionPane.showInputDialog("Digite el contenido");
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
+        DefaultMutableTreeNode parent = (DefaultMutableTreeNode) selectedNode.getParent();
+        System.out.println(parent.toString());
         file file = (file) selectedNode.getUserObject();
-        String fullName = getFullName(file); 
+        String fullName = getFullName(file);
 
-        
-
-        
         if (selectedNode != jt.getModel().getRoot()) {
-            
+
             for (Sector s : disco_virtual) {
-                String name = getFullName(s.getFile());
-                file archivo= s.getFile();                
-                if (name.equals(fullName)) {
-                    //borrar archivo                   
-//                    s.resetSector(s);
-//                      delete();?
-                      
-                      archivo.setContent(contenido);
-                      archivo.setModicationDate();
-                      
-                                         
-                      
-//                     
-//                      add_file(archivo);
-                      
-//                      modifyCurrentFileNode(contenido);
-                      
-                    
+                System.out.println(s);
+                if (!s.isEmpty) {
+                    String name = getFullName(s.getFile());
+                    file archivo = s.getFile();
+                    file temp = new file();
+                    if (name.equals(fullName)) {
+                        temp.setName(archivo.getName());
+                        temp.setExtension(archivo.getExtension());
+                        temp.setContent(contenido);
+                        temp.setCreationDate(archivo.getCreationDate());
+                        temp.setModicationDate();
+                        temp.setSize(contenido.length());
+                        temp.setPath(archivo.getPath());
+
+                        delete();
+                        addTree(temp, parent);
+
+                        break;
+                    }
+
                 }
-                System.out.println(s.toString());
-                System.out.println(archivo.toString());
-                 s.setFile(archivo);
-                 escribir();
-                 
-       
-       DefaultTreeModel model = (DefaultTreeModel)jt.getModel();
-        model.reload();
+
             }
         }
-        
-        
-        
-        
-        
 
-        
+
     }//GEN-LAST:event_modFileActionPerformed
 
     private void moveDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveDirActionPerformed
-        // TODO add your handling code here:
+        TreePath[] selectionPaths = jt.getSelectionPaths();
+        file archivo = new file();
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) selectionPaths[0].getLastPathComponent();
+            DefaultMutableTreeNode nodeDestino = (DefaultMutableTreeNode) selectionPaths[1].getLastPathComponent();
+            if (node.getUserObject() instanceof file) {
+                archivo = (file) node.getUserObject();
+            }          
+            String path = crearPath(nodeDestino.getPath());
+            archivo.setPath(path);        
+            deleteNode(node);
+            addTree(archivo, nodeDestino);
+                
+
     }//GEN-LAST:event_moveDirActionPerformed
 
+
     private void copyFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyFileActionPerformed
-        // TODO add your handling code here:
+        TreePath[] selectionPaths = jt.getSelectionPaths();
+        System.out.println(selectionPaths.toString());
+        System.out.println(selectionPaths.length);
+        file archivo = new file();
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) selectionPaths[0].getLastPathComponent();
+            DefaultMutableTreeNode nodeDestino = (DefaultMutableTreeNode) selectionPaths[1].getLastPathComponent();
+            if (node.getUserObject() instanceof file) {
+                archivo = (file) node.getUserObject();
+            }          
+            String path = crearPath(nodeDestino.getPath());
+            archivo.setPath(path);        
+            addTree(archivo, nodeDestino);
+                
+            
+        
     }//GEN-LAST:event_copyFileActionPerformed
+
 
     private void seePropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seePropertiesActionPerformed
         // TODO add your handling code here:
         TreePath currentSelection = jt.getSelectionPath();
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
         file archivo = (file) currentNode.getUserObject();
-        
-      
-        fileName.setText("Nombre: " + archivo.getName()+"."+ archivo.getExtension());
+
+        fileName.setText("Nombre: " + archivo.getName() + "." + archivo.getExtension());
         fileContent.setText("Contenido: " + archivo.getContent());
         fileDate.setText("Fecha Creacion: " + archivo.getCreationDate().toString());
-        fileDateMod.setText("Fecha Modificacion: " +archivo.getModicationDate());
+        fileDateMod.setText("Fecha Modificacion: " + archivo.getModicationDate());
         fileSize.setText("Tamaño: " + archivo.getSize());
         filePath.setText("Path: " + archivo.getPath());
-        
-        
+
         fileName.setVisible(true);
         fileContent.setVisible(true);
         fileDate.setVisible(true);
         fileDateMod.setVisible(true);
         fileSize.setVisible(true);
         filePath.setVisible(true);
-       
-        
-        
-    
+
 //        textPane.setVisible(true);
     }//GEN-LAST:event_seePropertiesActionPerformed
 
@@ -425,22 +455,22 @@ public class GUI extends javax.swing.JFrame {
 
     void doMouseClicked(MouseEvent me) {
         TreePath tp = jt.getPathForLocation(me.getX(), me.getY());
-        if (tp != null){
+        if (tp != null) {
             //        TreePath currentSelection = jt.getSelectionPath();
             DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (tp.getLastPathComponent());
             file archivo = (file) currentNode.getUserObject();
-            
-            fileContent.setText(archivo.getContent());           
-            
+
+            fileContent.setText(archivo.getContent());
+
             fileName.setVisible(false);
             fileContent.setVisible(true);
             fileDate.setVisible(false);
             fileDateMod.setVisible(false);
             fileSize.setVisible(false);
             filePath.setVisible(false);
-        }else{
+        } else {
             fileContent.setText("");
-        } 
+        }
         textPane.setVisible(true);
     }
 
@@ -452,68 +482,57 @@ public class GUI extends javax.swing.JFrame {
         String cant_sector = JOptionPane.showInputDialog("Digite la cantidad de sectores");
         ArrayList sectors = new ArrayList<Sector>();
 
-        disk = new Disk(name,Integer.parseInt(size), Integer.parseInt(cant_sector) ,sectors);
-        
-        tamaño_sector= Integer.parseInt(size);      
-        file_system(name, cant_sector,size);
-        DefaultMutableTreeNode style=new DefaultMutableTreeNode(name);  
-        
-        jt = new javax.swing.JTree(style);
-        
-//        jt.setDragEnabled(true);
-//        jt.setDropMode(DropMode.ON_OR_INSERT);
-//        jt.setTransferHandler(new TreeTransferHandler());
-//        jt.getSelectionModel().setSelectionMode(
-//                TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
-//        expandTree(jt);
+        disk = new Disk(name, Integer.parseInt(size), Integer.parseInt(cant_sector), sectors);
 
-        
+        tamaño_sector = Integer.parseInt(size);
+        file_system(name, cant_sector, size);
+        DefaultMutableTreeNode style = new DefaultMutableTreeNode(name);
+
+        jt = new javax.swing.JTree(style);
         jt.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent me) {
                 doMouseClicked(me);
             }
-        });               
-    
-         treePanel.setViewportView(jt);
-         
-    
-       
-       
+        });
+
+        treePanel.setViewportView(jt);
+
+
     }//GEN-LAST:event_createDiskActionPerformed
 
-    private void jt(java.awt.event.MouseEvent evt){
-        
+    private void jt(java.awt.event.MouseEvent evt) {
+
         TreeSelectionModel smd = jt.getSelectionModel();
-        if(smd.getSelectionCount() > 0){
+        if (smd.getSelectionCount() > 0) {
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
-            
+
         }
     }
-     
-    private void jtMouseClicked(java.awt.event.MouseEvent evt) {                                       
+
+    private void jtMouseClicked(java.awt.event.MouseEvent evt) {
         // TODO add your handling code here:
         TreeSelectionModel smd = jt.getSelectionModel();
         System.out.println(smd);
-        if(smd.getSelectionCount() > 0){
-            
+        if (smd.getSelectionCount() > 0) {
+
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
-           // label.setText(selectedNode.getUserObject().toString());
-            
+            // label.setText(selectedNode.getUserObject().toString());
+
         }
-    }                                      
+    }
 
     private void treePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treePanelMouseClicked
         // TODO add your handling code here:
         TreeSelectionModel smd = jt.getSelectionModel();
-        if(smd.getSelectionCount() > 0){
-            
+        if (smd.getSelectionCount() > 0) {
+
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
             System.out.println(selectedNode);
-           // label.setText(selectedNode.getUserObject().toString());
-            
+            // label.setText(selectedNode.getUserObject().toString());
+
         }
     }//GEN-LAST:event_treePanelMouseClicked
-    
+
     public boolean name_check(DefaultMutableTreeNode parentNode, String name, String ext) {
         boolean band = false;
         int lim = parentNode.getChildCount();
@@ -530,28 +549,45 @@ public class GUI extends javax.swing.JFrame {
         return band;
     }
 
+    public DefaultMutableTreeNode getRepeatNode(DefaultMutableTreeNode parentNode, String name, String ext) {
+        boolean band = false;
+        int lim = parentNode.getChildCount();
+        if (lim != 0) {
+            for (int i = 0; i < lim; i++) {
+                DefaultMutableTreeNode temp = (DefaultMutableTreeNode) parentNode.getChildAt(i);
+                Object user = temp.getUserObject();
+                file file_aux = (file) user;
+                if (file_aux.getName().equals(name) && file_aux.getExtension().equals(ext)) {
+                    band = true;
+                    return temp;
+                }
+            }
+        }
+        return parentNode;
+    }
+
     public void modifyCurrentFileNode(String new_file_content) {
         TreePath currentSelection = jt.getSelectionPath();
         if (currentSelection != null) {
-            DefaultMutableTreeNode currentNode= (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
+            DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) (currentSelection.getLastPathComponent());
             file archivo = (file) currentNode.getUserObject();
             archivo.setContent(new_file_content);
 
         }
     }
-    
-    public void inicializa_disco(){
-        disco_virtual  = new ArrayList<>();
-        for(int i=0;i<cant_sectores;i++){
-            Sector sector_n = new Sector("", i, "", true, "",null);
+
+    public void inicializa_disco() {
+        disco_virtual = new ArrayList<>();
+        for (int i = 0; i < cant_sectores; i++) {
+            Sector sector_n = new Sector("", i, "", true, "", null);
             disco_virtual.add(sector_n);
         }
         System.out.println(disco_virtual.toString());
-        
+
     }
-    
+
     public void file_system(String name, String sectores, String tamaño) {
-        
+
         BufferedWriter writer = null;
         try {
             filedisk = new File(name + ".txt");
@@ -566,20 +602,20 @@ public class GUI extends javax.swing.JFrame {
                 inicializa_disco();
                 for (int i = 0; i < num_sector; i++) {
                     writer.write("sector disponible");
-                    
+
                     writer.write('\n');
                 }
                 writer.close();
             } else {
                 System.out.println("File already present at the specified location");
-                JOptionPane.showMessageDialog(rootPane,"Error al crear el disco");
+                JOptionPane.showMessageDialog(rootPane, "Error al crear el disco");
             }
         } catch (IOException e) {
             System.out.println("Exception Occurred:");
             e.printStackTrace();
         }
-    }    
- 
+    }
+
     public int sectores_necesarios(int tamaño) {
         int tam = 0;
         double sec_necesitados = tamaño / tamaño_sector;
@@ -591,121 +627,100 @@ public class GUI extends javax.swing.JFrame {
             tam = sec_necesitados_aux + 1;
         }
         return tam;
-    }   
-   
-    public int sectores_disponibles(){
+    }
+
+    public int sectores_disponibles() {
         int sectores = 0;
-        for(Sector s : disco_virtual){
+        for (Sector s : disco_virtual) {
             boolean estado = s.getEmpty();
-            if(estado)
-                sectores++;            
+            if (estado) {
+                sectores++;
+            }
         }
         return sectores;
-    }    
-    
+    }
+
     public boolean add_file(file new_file) {
         int size_contenido = new_file.getContent().length();
+        double sec_necesitados = new_file.sectoresNecesarios(size_contenido, tamaño_sector);
+        double necesitados = sec_necesitados;
 
-        double sec_necesitados = new_file.sectoresNecesarios(size_contenido,tamaño_sector);
-
-        double necesitados=sec_necesitados;       
-        
-        if(necesitados <= disk.sectoresDisponibles){
-            for(int i=0; i<sec_necesitados;i++){
-
-                for(Sector s:disco_virtual){
-//                    System.out.println(s);
-                    if(s.isEmpty){
+        if (necesitados <= disk.sectoresDisponibles) {
+            for (int i = 0; i < sec_necesitados; i++) {
+                for (Sector s : disco_virtual) {
+                    if (s.isEmpty) {
                         s.setNombre(new_file.getName());
                         s.setContenido(new_file.getContent());
                         s.setIsEmpty(false);
                         s.setRuta(new_file.getPath());
                         s.setFile(new_file);
-                        
-                        
-                        disk.setSectoresDisponibles(disk.getSectoresDisponibles()-1);
-       
+                        disk.setSectoresDisponibles(disk.getSectoresDisponibles() - 1);
                         necesitados--;
                         escribir();
                         break;
-                        
-                        
-                        
-                        //escribir_sector(new_file.toFile(), s.getNumero_sector());
                     }
                 }
             }
-//            System.out.println(disco_virtual);
-        }else{
+        } else {
             System.out.println("no hay espacio en el disco");
-            JOptionPane.showMessageDialog(rootPane,"No hay sectores suficientees");
+            JOptionPane.showMessageDialog(rootPane, "No hay sectores suficientees");
             return false;
-            
         }
-        
         return true;
-        
     }
-    
-    public void escribir(){
-        
-         File file = new File(disk.getName()+".txt");
-         if (file.exists()){
-                file.delete();
-        }  
+
+    public void escribir() {
+
+        File file = new File(disk.getName() + ".txt");
+        if (file.exists()) {
+            file.delete();
+        }
         RandomAccessFile f;
-        try {                 
-            f = new RandomAccessFile(new File(disk.getName()+".txt"), "rw");
-            for(Sector s:disco_virtual){
-                if(s.getEmpty()){                    
+        try {
+            f = new RandomAccessFile(new File(disk.getName() + ".txt"), "rw");
+            for (Sector s : disco_virtual) {
+                if (s.getEmpty()) {
                     f.write("sector vacio".getBytes());
-                    f.write("\n".getBytes());                      
-                }else{
-                     f.write(s.toString().getBytes());
-                     f.write("\n".getBytes());                    
-                }              
+                    f.write("\n".getBytes());
+                } else {
+                    f.write(s.toString().getBytes());
+                    f.write("\n".getBytes());
+                }
             }
             f.close();
         } catch (Exception e) {
             e.printStackTrace();
-        }       
+        }
     }
-    
+
     private void expandTree(JTree tree) {
-        DefaultMutableTreeNode root =
-            (DefaultMutableTreeNode)tree.getModel().getRoot();
+        DefaultMutableTreeNode root
+                = (DefaultMutableTreeNode) tree.getModel().getRoot();
         Enumeration e = root.breadthFirstEnumeration();
-        while(e.hasMoreElements()) {
-            DefaultMutableTreeNode node =
-                (DefaultMutableTreeNode)e.nextElement();
-            if(node.isLeaf()) continue;
+        while (e.hasMoreElements()) {
+            DefaultMutableTreeNode node
+                    = (DefaultMutableTreeNode) e.nextElement();
+            if (node.isLeaf()) {
+                continue;
+            }
             int row = tree.getRowForPath(new TreePath(node.getPath()));
             tree.expandRow(row);
         }
-}
-    
-    private String crearPath(Object[] path) {
-            
-//            System.out.println(path.toString());
-//        System.out.println("paht"+ path.length + path.toString());
-        String p="";
-        for(int i=0; i<path.length; i++){
-//            System.out.println(path[i]);
-            p+=path[i].toString();
-            p+="/";
+    }
+
+   private String crearPath(Object[] path) {
+        String p = "";
+        for (int i = 0; i < path.length; i++) {
+            p += path[i].toString();
+            p += "/";
         }
-//        System.out.println(path);
-      
-        
-        
-        
         return p;
     }
-   
+
     private String getFullName(file file) {
         return file.getPath() + file.getName() + "." + file.getExtension();
     }
-    
+
     private void delete() {
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) jt.getSelectionPath().getLastPathComponent();
         file file = (file) selectedNode.getUserObject();
@@ -713,19 +728,51 @@ public class GUI extends javax.swing.JFrame {
 
         if (selectedNode != jt.getModel().getRoot()) {
             for (Sector s : disco_virtual) {
-                String name = getFullName(s.getFile());
-                if (name.equals(fullName)) {
-                    //borrar archivo                   
-                    s.resetSector(s);
-                    DefaultTreeModel model = (DefaultTreeModel) jt.getModel();
-                    model.removeNodeFromParent(selectedNode);
-                    model.nodeChanged(selectedNode);
-                    escribir();
+                if (!s.isEmpty) {
+                    String name = getFullName(s.getFile());
+                    System.out.println(name);
+                    System.out.println(fullName);
+                    if (name.equals(fullName)) {
+                        //borrar archivo  
+                        System.out.println("etnora comaodamdoracion");
+                        s.resetSector(s);
+                        DefaultTreeModel model = (DefaultTreeModel) jt.getModel();
+                        model.removeNodeFromParent(selectedNode);
+                        model.nodeChanged(selectedNode);
+                        escribir();
+                    }
                 }
             }
         }
 
     }
+
+    private void deleteNode(DefaultMutableTreeNode selectedNode) {
+
+        file file = (file) selectedNode.getUserObject();
+        String fullName = getFullName(file);
+
+        if (selectedNode != jt.getModel().getRoot()) {
+            for (Sector s : disco_virtual) {
+                if (!s.isEmpty) {
+                    String name = getFullName(s.getFile());
+                    System.out.println(name);
+                    System.out.println(fullName);
+                    if (name.equals(fullName)) {
+                        //borrar archivo  
+                        System.out.println("etnora comaodamdoracion");
+                        s.resetSector(s);
+                        DefaultTreeModel model = (DefaultTreeModel) jt.getModel();
+                        model.removeNodeFromParent(selectedNode);
+                        model.nodeChanged(selectedNode);
+                        escribir();
+                    }
+                }
+            }
+        }
+
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -778,7 +825,5 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel textPane;
     public javax.swing.JScrollPane treePanel;
     // End of variables declaration//GEN-END:variables
-
-
 
 }
