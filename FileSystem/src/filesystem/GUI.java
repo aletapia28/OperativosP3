@@ -410,25 +410,29 @@ public class GUI extends javax.swing.JFrame {
                 if (!s.isEmpty) {
                     String name = getFullName(s.getFile());
                     file archivo = s.getFile();
+                    
                     file temp = new file();
                     if (name.equals(fullName)) {
                         temp.setName(archivo.getName());
                         temp.setExtension(archivo.getExtension());
                         temp.setContent(contenido);
                         temp.setCreationDate(archivo.getCreationDate());
-                        temp.setModicationDate();
+                        temp.setModDate();
                         temp.setSize(contenido.length());
                         temp.setPath(archivo.getPath());
-
-                        deleteNode(selectedNode);
+                        
+                        delete();
                         addTree(temp, parent);
-
-                        break;
+                        
+                        
                     }
 
                 }
 
             }
+            
+
+            
         }
 
 
@@ -483,15 +487,15 @@ public class GUI extends javax.swing.JFrame {
         fileSize.setText("Tamaño: " + archivo.getSize());
         filePath.setText("Path: " + archivo.getPath());
         
-        jTextArea1.setVisible(false);
+        
         fileName.setVisible(true);
         fileContent.setVisible(true);
         fileDate.setVisible(true);
         fileDateMod.setVisible(true);
         fileSize.setVisible(true);
         filePath.setVisible(true);
-
-//        textPane.setVisible(true);
+        jTextArea1.setVisible(false);
+        textPane.setVisible(true);
     }//GEN-LAST:event_seePropertiesActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
@@ -765,11 +769,7 @@ public class GUI extends javax.swing.JFrame {
         int size_contenido = new_file.getContent().length();
         double sec_necesitados = new_file.sectoresNecesarios(size_contenido, tamaño_sector);
         double necesitados = sec_necesitados;
-        
-        System.out.println("sec necesitados" + necesitados);
-        System.out.println("sec disp" + disk.sectoresDisponibles);
-        System.out.println("sec_necesitados" + sec_necesitados);
-        System.out.println("sec get disp" + disk.getSectoresDisponibles());
+
         if (necesitados <= disk.sectoresDisponibles) {
             for (int i = 0; i < sec_necesitados; i++) {
                 for (Sector s : disco_virtual) {
@@ -884,15 +884,14 @@ public class GUI extends javax.swing.JFrame {
             for (Sector s : disco_virtual) {
                 if (!s.isEmpty) {
                     String name = getFullName(s.getFile());
-                    System.out.println(name);
-                    System.out.println(fullName);
                     if (name.equals(fullName)) {
                         //borrar archivo  
-                        System.out.println("etnora comaodamdoracion");
+                       
                         s.resetSector(s);
                         DefaultTreeModel model = (DefaultTreeModel) jt.getModel();
                         model.removeNodeFromParent(selectedNode);
                         model.nodeChanged(selectedNode);
+                        disk.setSectoresDisponibles(disk.getSectoresDisponibles() +1);
                         escribir();
                     }
                 }

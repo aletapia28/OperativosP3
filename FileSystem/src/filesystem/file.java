@@ -61,77 +61,70 @@ public class file {
         this.path = path;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public String getPath() {
-        return path;
-    }
     
 
-    public void setContent(String content) {
-        this.content = content;
+    public file() {
     }
 
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-
-     
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-   
     public String getExtension() {
-        return this.extension;
+        return extension;
     }
 
-    public void setExtension(String Extension) {
+    public void setExtension(String extension) {
         this.extension = extension;
     }
 
-    public Date getCreationDate() {
-        return this.creationDate;
+    public String getContent() {
+        return content;
     }
 
-    public void setCreationDate(Date CreationDate) {
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
     public Date getModicationDate() {
-        return this.modicationDate;
+        return modicationDate;
     }
 
-    public void setModicationDate() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
+    public void setModicationDate(Date modicationDate) {
+        this.modicationDate = modicationDate;
+    }
+       public void setModDate() {
         Date date = new Date();
-        System.out.println("modficadasda");
         this.modicationDate = date;
     }
 
-    public file() {
-    }
-
     public int getSize() {
-        return this.size;
+        return size;
     }
 
-    public void setSize(int Size) {
+    public void setSize(int size) {
         this.size = size;
     }
 
+    public String getPath() {
+        return path;
+    }
 
-    
-
-    // public void createFile(String pname, String pExtension, String pContent, String ppath){
-    //     File file = new File();
+    public void setPath(String path) {
+        this.path = path;
+    }
 
 
 
